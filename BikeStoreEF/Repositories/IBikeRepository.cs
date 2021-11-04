@@ -12,6 +12,6 @@ namespace BikeStoreEF.Repositories
     {
         Task<IEnumerable<Bike>> GetAllWithBrandAndCategoryAsync();
         Task<Bike> GetWithBrandAndCategoryByIdAsync(int id);
-        Task<IEnumerable<Bike>> FindAllWithBrandAndCategory(Expression<Func<Bike, bool>> predicate);
+        Task<IEnumerable<Bike>> FindAllWithBrandAndCategoryAsync(Expression<Func<Bike, bool>> predicate);
     }
 }
