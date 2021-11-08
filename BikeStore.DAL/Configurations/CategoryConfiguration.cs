@@ -12,7 +12,7 @@ namespace BikeStore.DAL.Configurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder
-                .ToTable("categories");
+                .ToTable("Categories");
 
             builder
                 .HasKey(b => b.CategoryId);

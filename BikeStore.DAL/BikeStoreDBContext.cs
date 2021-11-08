@@ -20,13 +20,13 @@ namespace BikeStore.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .ApplyConfiguration(new BikeConfigurations);
+                .ApplyConfiguration(new BikeConfigurations());
 
             modelBuilder
-                .ApplyConfiguration(new CategoryConfiguration);
+                .ApplyConfiguration(new CategoryConfiguration());
 
             modelBuilder
-                .ApplyConfiguration(new BrandConfigurations);
+                .ApplyConfiguration(new BrandConfigurations());
         }
     }
 }
