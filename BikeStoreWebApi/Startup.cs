@@ -1,4 +1,6 @@
+using BikeStore.Core.Services;
 using BikeStore.DAL;
+using BikeStore.Services;
 using BikeStoreEF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +32,9 @@ namespace BikeStoreWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IBikeService, BikeService>();
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

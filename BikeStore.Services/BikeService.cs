@@ -1,0 +1,69 @@
+﻿using BikeStore.Core.Models;
+using BikeStore.Core.Services;
+using BikeStoreEF;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BikeStore.Services
+{
+    public class BikeService : IBikeService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        public BikeService(IUnitOfWork unitOfWork)
+        {
+            this._unitOfWork = unitOfWork;
+        }
+
+        public async Task<Bike> CreateBike(Bike newBike)
+        {
+            await _unitOfWork.Bikes.AddAsync(newBike);
+            await _unitOfWork.SaveAsync();
+            return newBike;
+        }
+
+        public async Task DeleteBike(Bike bike)
+        {
+            _unitOfWork.Bikes.Remove(bike);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<IEnumerable<Bike>> GetAllBikes()
+        {
+            return await _unitOfWork.Bikes.GetAllAsync();
+        }
+
+        public async Task<Bike> GetBikeById(int id)
+        {
+            return await _unitOfWork.Bikes.GetByIdAsync(id);
+        }
+
+        public IEnumerable<Bike> GetBikesByBrand(string brand)
+        {
+            return _unitOfWork.Bikes.Find(x => x.Brand.BrandName == brand);
+        }
+
+        public async Task<Bike> GetBikeWithCategoryAndBrand(int id)
+        {
+            return await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
+        }
+
+        public async Task UpdateBike(Bike bikeToBeUpdated, Bike bike)
+        {
+            bikeToBeUpdated.Name = bike.Name;
+            bikeToBeUpdated.BrandId = bike.BrandId;
+            bikeToBeUpdated.CategoryId = bike.CategoryId;
+            bikeToBeUpdated.Price = bike.Price;
+            bikeToBeUpdated.ModelYear = bike.ModelYear;
+            bikeToBeUpdated.BikePhoto = bike.BikePhoto;
+
+            await _unitOfWork.SaveAsync();
+        }
+
+        IEnumerable<Bike> IBikeService.GetBikesByCategory(string category)
+        {
+            return _unitOfWork.Bikes.Find(x => x.Category.Name == category);
+        }
+    }
+}

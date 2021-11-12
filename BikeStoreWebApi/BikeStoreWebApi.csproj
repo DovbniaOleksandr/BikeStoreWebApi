@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BikeStore.DAL\BikeStore.DAL.csproj" />
+    <ProjectReference Include="..\BikeStore.Services\BikeStore.Services.csproj" />
     <ProjectReference Include="..\BikeStoreEF\BikeStore.Core.csproj" />
   </ItemGroup>
 
