@@ -34,6 +34,11 @@ namespace BikeStore.Services
             return await _unitOfWork.Bikes.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Bike>> GetAllBikesWithCategoryAndBrand()
+        {
+            return await _unitOfWork.Bikes.GetAllWithBrandAndCategoryAsync();
+        }
+
         public async Task<Bike> GetBikeById(int id)
         {
             return await _unitOfWork.Bikes.GetByIdAsync(id);
