@@ -61,5 +61,29 @@ namespace BikeStoreWebApi.Controllers
 
             return Ok(brandDto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BrandDto>> UpdateBrand(int id, [FromBody] SaveBrandDto saveBrandDto)
+        {
+            var validator = new BrandValidator();
+            var validationResult = await validator.ValidateAsync(saveBrandDto);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var brandToBeUpdated = await _brandService.GetBrandById(id);
+
+            if (brandToBeUpdated == null)
+                return NotFound();
+
+            var brand = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
+
+            await _brandService.UpdateBrand(brandToBeUpdated, brand);
+
+            var updatedBrand = await _brandService.GetBrandById(id);
+            var updatedBrandDto = _mapper.Map<Brand, BrandDto>(updatedBrand);
+
+            return Ok(updatedBrandDto);
+        }
     }
 }

@@ -61,5 +61,29 @@ namespace BikeStoreWebApi.Controllers
 
             return Ok(categoryDto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] SaveCategoryDto saveCategoryDto)
+        {
+            var validator = new CategoryValidator();
+            var validationResult = await validator.ValidateAsync(saveCategoryDto);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var categoryToBeUpdated = await _categoryService.GetCategoryById(id);
+
+            if (categoryToBeUpdated == null)
+                return NotFound();
+
+            var category = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
+
+            await _categoryService.UpdateCategory(categoryToBeUpdated, category);
+
+            var updatedCategory = await _categoryService.GetCategoryById(id);
+            var updatedCategoryDto = _mapper.Map<Category, CategoryDto>(updatedCategory);
+
+            return Ok(updatedCategoryDto);
+        }
     }
 }

@@ -55,11 +55,35 @@ namespace BikeStoreWebApi.Controllers
 
             var newBike = await _bikeService.CreateBike(bikeToCreate);
 
-            var bike = await _bikeService.GetBikeById(newBike.BikeId);
+            var bike = await _bikeService.GetBikeWithCategoryAndBrand(newBike.BikeId);
 
             var bikeDto = _mapper.Map<Bike, BikeDto>(bike);
 
             return Ok(bikeDto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BikeDto>> UpdateBike(int id, [FromBody] SaveBikeDto saveBikeDto)
+        {
+            var validator = new BikeValidator();
+            var validationResult = await validator.ValidateAsync(saveBikeDto);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            var bikeToBeUpdated = await _bikeService.GetBikeById(id);
+
+            if (bikeToBeUpdated == null)
+                return NotFound();
+
+            var bike = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
+
+            await _bikeService.UpdateBike(bikeToBeUpdated, bike);
+
+            var updatedBike = await _bikeService.GetBikeWithCategoryAndBrand(id);
+            var updatedBikeDto = _mapper.Map<Bike, BikeDto>(updatedBike);
+
+            return Ok(updatedBikeDto);
         }
     }
 }
