@@ -85,5 +85,21 @@ namespace BikeStoreWebApi.Controllers
 
             return Ok(updatedCategoryDto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryById(id);
+
+            if (category == null)
+                return NotFound();
+
+            await _categoryService.DeleteCategory(category);
+
+            return NoContent();
+        }
     }
 }

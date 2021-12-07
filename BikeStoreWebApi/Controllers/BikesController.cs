@@ -85,5 +85,22 @@ namespace BikeStoreWebApi.Controllers
 
             return Ok(updatedBikeDto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBike(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            var bike = await _bikeService.GetBikeById(id);
+
+            if (bike == null)
+                return NotFound();
+
+            await _bikeService.DeleteBike(bike);
+
+            return NoContent();
+        }
+
     }
 }

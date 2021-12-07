@@ -85,5 +85,21 @@ namespace BikeStoreWebApi.Controllers
 
             return Ok(updatedBrandDto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBrand(int id)
+        {
+            if (id == 0)
+                return BadRequest();
+
+            var brand = await _brandService.GetBrandById(id);
+
+            if (brand == null)
+                return NotFound();
+
+            await _brandService.DeleteBrand(brand);
+
+            return NoContent();
+        }
     }
 }
