@@ -3,6 +3,7 @@ using BikeStore.Core.Services;
 using BikeStore.DAL;
 using BikeStore.Services;
 using BikeStoreEF;
+using BikeStoreWebApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -95,13 +96,13 @@ namespace BikeStoreWebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStoreWebApi v1"));
             }
 
+            app.ConfigureExceptionHandler();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseCors();
-
-            app.UseDeveloperExceptionPage();
 
             app.UseAuthentication();
             app.UseAuthorization();
