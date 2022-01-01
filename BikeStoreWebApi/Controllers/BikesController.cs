@@ -74,14 +74,12 @@ namespace BikeStoreWebApi.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            var bikeToBeUpdated = await _bikeService.GetBikeById(id);
-
-            if (bikeToBeUpdated == null)
-                return NotFound();
-
             var bike = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
 
-            await _bikeService.UpdateBike(bikeToBeUpdated, bike);
+            if(!(await _bikeService.UpdateBike(id, bike)))
+            {
+                return NotFound();
+            }
 
             var updatedBike = await _bikeService.GetBikeWithCategoryAndBrand(id);
             var updatedBikeDto = _mapper.Map<Bike, BikeDto>(updatedBike);

@@ -74,14 +74,12 @@ namespace BikeStoreWebApi.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            var brandToBeUpdated = await _brandService.GetBrandById(id);
-
-            if (brandToBeUpdated == null)
-                return NotFound();
-
             var brand = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
 
-            await _brandService.UpdateBrand(brandToBeUpdated, brand);
+            if (!(await _brandService.UpdateBrand(id, brand)))
+            {
+                return NotFound();
+            }
 
             var updatedBrand = await _brandService.GetBrandById(id);
             var updatedBrandDto = _mapper.Map<Brand, BrandDto>(updatedBrand);

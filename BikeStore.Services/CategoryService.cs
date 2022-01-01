@@ -39,12 +39,25 @@ namespace BikeStore.Services
             return await _unitOfWork.Categories.GetByIdAsync(id);
         }
 
-        public async Task UpdateCategory(Category categoryToBeUpdated, Category category)
+        public async Task<bool> UpdateCategory(int id, Category category)
         {
-            categoryToBeUpdated.CategoryId = category.CategoryId;
+            if (category == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var categoryToBeUpdated = await _unitOfWork.Categories.GetWithBikesByIdAsync(id);
+
+            if (categoryToBeUpdated == null)
+            {
+                return false;
+            }
+
             categoryToBeUpdated.Name = category.Name;
 
             await _unitOfWork.SaveAsync();
+
+            return true;
         }
     }
 }

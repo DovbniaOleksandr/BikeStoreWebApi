@@ -74,14 +74,12 @@ namespace BikeStoreWebApi.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            var categoryToBeUpdated = await _categoryService.GetCategoryById(id);
-
-            if (categoryToBeUpdated == null)
-                return NotFound();
-
             var category = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
 
-            await _categoryService.UpdateCategory(categoryToBeUpdated, category);
+            if (!(await _categoryService.UpdateCategory(id, category)))
+            {
+                return NotFound();
+            }
 
             var updatedCategory = await _categoryService.GetCategoryById(id);
             var updatedCategoryDto = _mapper.Map<Category, CategoryDto>(updatedCategory);

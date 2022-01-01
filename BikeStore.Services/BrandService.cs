@@ -39,12 +39,25 @@ namespace BikeStore.Services
             return await _unitOfWork.Brands.GetByIdAsync(id);
         }
 
-        public async Task UpdateBrand(Brand brandToBeUpdated, Brand brand)
+        public async Task<bool> UpdateBrand(int id, Brand brand)
         {
-            brandToBeUpdated.BrandId = brand.BrandId;
+            if (brand == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var brandToBeUpdated = await _unitOfWork.Brands.GetWithBikesByIdAsync(id);
+
+            if (brandToBeUpdated == null)
+            {
+                return false;
+            }
+
             brandToBeUpdated.BrandName = brand.BrandName;
 
             await _unitOfWork.SaveAsync();
+
+            return true;
         }
     }
 }

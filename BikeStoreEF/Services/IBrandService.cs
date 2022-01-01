@@ -11,7 +11,7 @@ namespace BikeStore.Core.Services
         Task<Brand> GetBrandById(int id);
         Task<IEnumerable<Brand>> GetAllBrands();
         Task<Brand> CreateBrand(Brand newBrand);
-        Task UpdateBrand(Brand brandToBeUpdated, Brand brand);
+        Task<bool> UpdateBrand(int id, Brand brand);
         Task DeleteBrand(Brand brand);
     }
 }

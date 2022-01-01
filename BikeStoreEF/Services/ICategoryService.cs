@@ -11,7 +11,7 @@ namespace BikeStore.Core.Services
         Task<Category> GetCategoryById(int id);
         Task<IEnumerable<Category>> GetAllCategories();
         Task<Category> CreateCategory(Category newCategory);
-        Task UpdateCategory(Category categoryToBeUpdated, Category category);
+        Task<bool> UpdateCategory(int id, Category category);
         Task DeleteCategory(Category category);
     }
 }

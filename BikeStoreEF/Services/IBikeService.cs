@@ -15,7 +15,7 @@ namespace BikeStore.Core.Services
         Task<IEnumerable<Bike>> GetAllBikesWithCategoryAndBrand();
         Task<Bike> GetBikeWithCategoryAndBrand(int id);
         Task<Bike> CreateBike(Bike newBike);
-        Task UpdateBike(Bike bikeToBeUpdated, Bike bike);
+        Task<bool> UpdateBike(int id, Bike bike);
         Task DeleteBike(Bike bike);
     }
 }

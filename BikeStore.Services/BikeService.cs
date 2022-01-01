@@ -56,8 +56,20 @@ namespace BikeStore.Services
             return await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
         }
 
-        public async Task UpdateBike(Bike bikeToBeUpdated, Bike bike)
+        public async Task<bool> UpdateBike(int id, Bike bike)
         {
+            if (bike == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var bikeToBeUpdated = await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
+
+            if(bikeToBeUpdated == null)
+            {
+                return false;
+            }
+
             bikeToBeUpdated.Name = bike.Name;
             bikeToBeUpdated.BrandId = bike.BrandId;
             bikeToBeUpdated.CategoryId = bike.CategoryId;
@@ -66,6 +78,8 @@ namespace BikeStore.Services
             bikeToBeUpdated.BikePhoto = bike.BikePhoto;
 
             await _unitOfWork.SaveAsync();
+
+            return true;
         }
 
         IEnumerable<Bike> IBikeService.GetBikesByCategory(string category)
