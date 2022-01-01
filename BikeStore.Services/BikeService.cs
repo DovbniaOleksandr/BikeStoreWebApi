@@ -11,6 +11,7 @@ namespace BikeStore.Services
     public class BikeService : IBikeService
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public BikeService(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
@@ -20,6 +21,7 @@ namespace BikeStore.Services
         {
             await _unitOfWork.Bikes.AddAsync(newBike);
             await _unitOfWork.SaveAsync();
+
             return newBike;
         }
 

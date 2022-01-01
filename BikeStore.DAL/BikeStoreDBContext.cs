@@ -12,6 +12,8 @@ namespace BikeStore.DAL
         public DbSet<Bike> Bikes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public BikeStoreDBContext(DbContextOptions<BikeStoreDBContext> options)
             : base(options)
@@ -27,6 +29,12 @@ namespace BikeStore.DAL
 
             modelBuilder
                 .ApplyConfiguration(new BrandConfigurations());
+
+            modelBuilder
+                .ApplyConfiguration(new RoleConfigurations());
+
+            modelBuilder
+                .ApplyConfiguration(new UserConfigurations());
 
             modelBuilder
                 .Seed();
@@ -121,6 +129,26 @@ namespace BikeStore.DAL
                 {
                     CategoryId = 7,
                     Name = "Road Bikes"
+                }
+            });
+            modelBuilder.Entity<Role>().HasData(new List<Role>() {
+                new Role()
+                {
+                    Id = 1,
+                    Name = "User"
+                },
+                new Role()
+                {
+                    Id = 2,
+                    Name = "Admin"
+                }
+            });
+            modelBuilder.Entity<User>().HasData(new List<User>() {
+                new User()
+                {
+                    Id = 1,
+                    Email = "admin@gmail.com",
+                    Password = "admin"
                 }
             });
         }

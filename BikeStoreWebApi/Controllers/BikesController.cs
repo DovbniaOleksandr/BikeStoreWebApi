@@ -3,6 +3,7 @@ using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStoreWebApi.DTOs;
 using BikeStoreWebApi.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(bikeDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost("")]
         public async Task<ActionResult<BikeDto>> CreateBike([FromBody] SaveBikeDto saveBikeDto)
         {
@@ -62,6 +64,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(bikeDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult<BikeDto>> UpdateBike(int id, [FromBody] SaveBikeDto saveBikeDto)
         {
@@ -86,6 +89,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(updatedBikeDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBike(int id)
         {

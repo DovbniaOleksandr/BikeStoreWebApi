@@ -1,7 +1,9 @@
+using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStore.DAL;
 using BikeStore.Services;
 using BikeStoreEF;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +37,7 @@ namespace BikeStoreWebApi
             services.AddTransient<IBikeService, BikeService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -44,6 +47,42 @@ namespace BikeStoreWebApi
 
             services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BikeStoreWebApi"), x => x.MigrationsAssembly("BikeStore.DAL")));
             services.AddAutoMapper(typeof(Startup));
+
+            var authOptionsConfiguration = Configuration.GetSection("Auth");
+
+            var authOtions = authOptionsConfiguration.Get<AuthOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = authOtions.Issuer,
+
+                        ValidateAudience = true,
+                        ValidAudience = authOtions.Audience,
+
+                        ValidateLifetime = true,
+
+                        IssuerSigningKey = authOtions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
+
+            services.Configure<AuthOptions>(authOptionsConfiguration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +99,11 @@ namespace BikeStoreWebApi
 
             app.UseRouting();
 
+            app.UseCors();
+
+            app.UseDeveloperExceptionPage();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

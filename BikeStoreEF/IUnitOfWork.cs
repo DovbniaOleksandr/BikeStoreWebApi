@@ -12,6 +12,7 @@ namespace BikeStoreEF
         IBikeRepository Bikes { get; }
         ICategoryRepository Categories { get; }
         IBrandRepository Brands { get; }
+        IUserRepository Users { get; }
 
         Task<int> SaveAsync();
     }

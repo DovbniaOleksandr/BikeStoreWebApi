@@ -3,6 +3,7 @@ using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStoreWebApi.DTOs;
 using BikeStoreWebApi.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(categoryDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost("")]
         public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] SaveCategoryDto saveCategoryDto)
         {
@@ -62,6 +64,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(categoryDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
@@ -86,6 +89,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(updatedCategoryDto);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
