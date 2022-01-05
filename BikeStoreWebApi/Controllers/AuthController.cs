@@ -25,7 +25,7 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult> Login([FromBody] Login request)
+        public async Task<ActionResult> Login([FromBody] LoginDto request)
         {
             var user = await _userService.GetUserByEmailAndPassword(request.Email, request.Password);
 

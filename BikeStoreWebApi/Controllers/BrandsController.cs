@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BikeStore.Core.Enums;
 using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStoreWebApi.DTOs;

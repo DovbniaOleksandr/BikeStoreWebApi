@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.DTOs
 {
-    public class Login
+    public class LoginDto
     {
         public string Email { get; set; }
 

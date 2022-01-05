@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.Validators
 {
-    public class LoginValidator: AbstractValidator<Login>
+    public class LoginValidator: AbstractValidator<LoginDto>
     {
         public LoginValidator()
         {

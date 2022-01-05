@@ -11,10 +11,4 @@ namespace BikeStore.Core.Models
 
         public IEnumerable<User> Users { get; set; }
     }
-
-    public static class Roles
-    {
-        public const string Admin = "Admin";
-        public const string User = "User";
-    }
 }
