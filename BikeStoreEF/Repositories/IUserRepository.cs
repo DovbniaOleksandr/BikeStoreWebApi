@@ -1,11 +1,10 @@
 ﻿using BikeStore.Core.Models;
-using BikeStoreEF.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BikeStoreEF.Repositories
+namespace BikeStore.Core.Repositories
 {
     public interface IUserRepository: IRepository<User>
     {

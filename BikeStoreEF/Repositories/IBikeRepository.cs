@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BikeStoreEF.Repositories
+namespace BikeStore.Core.Repositories
 {
     public interface IBikeRepository: IRepository<Bike>
     {

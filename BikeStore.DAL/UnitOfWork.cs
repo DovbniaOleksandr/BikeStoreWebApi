@@ -1,6 +1,6 @@
-﻿using BikeStore.DAL.Repositories;
+﻿using BikeStore.Core.Repositories;
+using BikeStore.DAL.Repositories;
 using BikeStoreEF;
-using BikeStoreEF.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,4 +1,4 @@
-﻿using BikeStoreEF.Repositories;
+﻿using BikeStore.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
