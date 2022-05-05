@@ -19,6 +19,8 @@ namespace BikeStoreWebApi.Mapping
             CreateMap<Category, SaveCategoryDto>();
             CreateMap<Brand, BrandDto>();
             CreateMap<Brand, SaveBrandDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<Role, RoleDto>();
 
             // Resource to Domain
             CreateMap<BikeDto, Bike>();
@@ -27,6 +29,7 @@ namespace BikeStoreWebApi.Mapping
             CreateMap<SaveCategoryDto, Category>();
             CreateMap<BrandDto, Brand>();
             CreateMap<SaveBrandDto, Brand>();
+            CreateMap<RegistrationDto, User>();
         }
     }
 }

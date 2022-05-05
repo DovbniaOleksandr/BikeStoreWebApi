@@ -26,7 +26,7 @@ namespace BikeStoreWebApi.Extensions
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = "Test Internal Server Error."
+                            Message = contextFeature.Error.Message
                         }.ToString());
                     }
                 });

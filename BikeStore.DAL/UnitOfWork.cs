@@ -16,6 +16,7 @@ namespace BikeStore.DAL
         private CategoryRepository _categoryRepository;
         private BrandRepository _brandRepository;
         private UserRepository _userRepository;
+        private RoleRepository _roleRepository;
 
         public UnitOfWork(BikeStoreDBContext context)
         {
@@ -29,6 +30,8 @@ namespace BikeStore.DAL
         public IBrandRepository Brands => _brandRepository ?? new BrandRepository(_context);
 
         public IUserRepository Users => _userRepository ?? new UserRepository(_context);
+
+        public IRoleRepository Roles => _roleRepository ?? new RoleRepository(_context);
 
         public void Dispose()
         {

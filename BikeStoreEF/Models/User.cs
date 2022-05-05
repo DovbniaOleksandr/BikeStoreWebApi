@@ -10,6 +10,6 @@ namespace BikeStore.Core.Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public IEnumerable<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }
