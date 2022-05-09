@@ -13,5 +13,6 @@ namespace BikeStoreWebApi.DTOs
         public short ModelYear { get; set; }
         public decimal Price { get; set; }
         public string BikePhoto { get; set; }
+        public string Description { get; set; }
     }
 }

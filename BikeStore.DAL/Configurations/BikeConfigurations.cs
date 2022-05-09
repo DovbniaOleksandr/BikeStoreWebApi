@@ -36,6 +36,10 @@ namespace BikeStore.DAL.Configurations
             builder.HasOne(b => b.Category)
                 .WithMany(c => c.Bikes)
                 .HasForeignKey(b => b.CategoryId);
+
+            builder.Property(b => b.Description)
+                .IsRequired()
+                .IsUnicode(false);
         }
     }
 }

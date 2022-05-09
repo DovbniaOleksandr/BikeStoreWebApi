@@ -76,6 +76,7 @@ namespace BikeStore.Services
             bikeToBeUpdated.Price = bike.Price;
             bikeToBeUpdated.ModelYear = bike.ModelYear;
             bikeToBeUpdated.BikePhoto = bike.BikePhoto;
+            bikeToBeUpdated.Description = bike.Description;
 
             await _unitOfWork.SaveAsync();
 

@@ -15,6 +15,7 @@ namespace BikeStore.Core.Models
         public short ModelYear { get; set; }
         public decimal Price { get; set; }
         public string BikePhoto { get; set; }
+        public string Description { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }

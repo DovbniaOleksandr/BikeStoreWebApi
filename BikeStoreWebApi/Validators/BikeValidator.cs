@@ -15,13 +15,14 @@ namespace BikeStoreWebApi.Validators
                 .NotEmpty()
                 .MaximumLength(100);
 
+            RuleFor(b => b.Description)
+                .NotEmpty();
+
             RuleFor(b => b.CategoryId)
-                .NotEmpty()
-                .WithMessage("'Category Id' must not be 0.");
+                .NotEmpty().WithMessage("'Category Id' must not be 0.");
 
             RuleFor(b => b.BrandId)
-                .NotEmpty()
-                .WithMessage("'Brand Id' must not be 0.");
+                .NotEmpty().WithMessage("'Brand Id' must not be 0.");
         }
     }
 }
