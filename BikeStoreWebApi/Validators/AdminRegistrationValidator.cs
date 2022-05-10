@@ -26,7 +26,7 @@ namespace BikeStoreWebApi.Validators
                 .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter.")
                 .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number.");
 
-            RuleFor(x => x.Password)
+            RuleFor(x => x.Role)
                 .Must(x => adminRoles.Contains(x));
         }
     }
