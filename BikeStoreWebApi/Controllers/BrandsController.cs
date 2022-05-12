@@ -44,7 +44,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(brandDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("")]
         public async Task<ActionResult<BrandDto>> CreateBrand([FromBody] SaveBrandDto saveBrandDto)
         {
@@ -65,7 +65,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(brandDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<BrandDto>> UpdateBrand(int id, [FromBody] SaveBrandDto saveBrandDto)
         {
@@ -88,7 +88,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(updatedBrandDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBrand(int id)
         {

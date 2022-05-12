@@ -17,5 +17,6 @@ namespace BikeStore.Core.Services
         Task<Bike> CreateBike(Bike newBike);
         Task<bool> UpdateBike(int id, Bike bike);
         Task DeleteBike(Bike bike);
+        Task<IEnumerable<Bike>> FilterBikes(BikeFilters filters);
     }
 }

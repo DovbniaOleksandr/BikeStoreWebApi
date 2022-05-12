@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BikeStore.Core.Models
 {
-    public class User
+    public class User: IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-
-        public ICollection<Role> Roles { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

@@ -35,6 +35,15 @@ namespace BikeStoreWebApi.Controllers
             return Ok(bikeDtos);
         }
 
+        [HttpPost("filter")]
+        public async Task<ActionResult<IEnumerable<BikeDto>>> FilterBikes([FromBody] BikeFilters filters)
+        {
+            var bikes = await _bikeService.FilterBikes(filters);
+            var bikeDtos = _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
+
+            return Ok(bikeDtos);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BikeDto>> GetBikeById(int id)
         {
@@ -44,7 +53,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(bikeDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("")]
         public async Task<ActionResult<BikeDto>> CreateBike([FromBody] SaveBikeDto saveBikeDto)
         {
@@ -65,7 +74,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(bikeDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<BikeDto>> UpdateBike(int id, [FromBody] SaveBikeDto saveBikeDto)
         {
@@ -88,7 +97,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(updatedBikeDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBike(int id)
         {

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,18 @@ namespace BikeStoreWebApi
             services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BikeStoreWebApi"), x => x.MigrationsAssembly("BikeStore.DAL")));
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddIdentity<User, Role>(options => 
+                {
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.User.RequireUniqueEmail = true;
+
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                }).AddEntityFrameworkStores<BikeStoreDBContext>();
             services.ConfigureAuthenticationService(Configuration.GetSection("Auth"));
 
             services.AddCors(options =>

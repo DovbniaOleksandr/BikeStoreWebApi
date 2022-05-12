@@ -1,4 +1,5 @@
-﻿using BikeStoreWebApi.DTOs;
+﻿using BikeStore.Core.Enums;
+using BikeStoreWebApi.DTOs.User;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,16 @@ using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.Validators
 {
-    public class AdminRegistrationValidator: AbstractValidator<RegistrationDto>
+    public class AdminRegistationValidator : AbstractValidator<RegistrationUserDto>
     {
-        List<string> adminRoles = new List<string>() { "Admin"};
+        List<string> adminRoles = new List<string>() { Roles.Admin };
 
-        public AdminRegistrationValidator()
+        public AdminRegistationValidator()
         {
+            RuleFor(l => l.UserName)
+                .NotEmpty()
+                .MaximumLength(50);
+
             RuleFor(l => l.Email)
                 .NotEmpty()
                 .MaximumLength(50)
@@ -26,7 +31,8 @@ namespace BikeStoreWebApi.Validators
                 .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter.")
                 .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number.");
 
-            RuleFor(x => x.Role)
+            RuleFor(l => l.Role)
+                .NotEmpty()
                 .Must(x => adminRoles.Contains(x));
         }
     }

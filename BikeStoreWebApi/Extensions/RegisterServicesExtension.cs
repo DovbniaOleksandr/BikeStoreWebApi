@@ -18,7 +18,7 @@ namespace BikeStoreWebApi.Extensions
             services.AddTransient<IBikeService, BikeService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
     }
 }

@@ -4,14 +4,16 @@ using BikeStore.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BikeStore.DAL.Migrations
 {
     [DbContext(typeof(BikeStoreDBContext))]
-    partial class BikeStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220511094247_RemoveUserRole")]
+    partial class RemoveUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,36 +189,6 @@ namespace BikeStore.DAL.Migrations
                             CategoryId = 7,
                             Name = "Road Bikes"
                         });
-                });
-
-            modelBuilder.Entity("BikeStore.Core.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BikeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("BikeStore.Core.Models.Role", b =>
@@ -435,25 +407,6 @@ namespace BikeStore.DAL.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("BikeStore.Core.Models.Order", b =>
-                {
-                    b.HasOne("BikeStore.Core.Models.Bike", "Bike")
-                        .WithMany()
-                        .HasForeignKey("BikeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BikeStore.Core.Models.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bike");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.Role", null)
@@ -513,11 +466,6 @@ namespace BikeStore.DAL.Migrations
             modelBuilder.Entity("BikeStore.Core.Models.Category", b =>
                 {
                     b.Navigation("Bikes");
-                });
-
-            modelBuilder.Entity("BikeStore.Core.Models.User", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

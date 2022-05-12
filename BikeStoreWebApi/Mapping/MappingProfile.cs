@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BikeStore.Core.Models;
 using BikeStoreWebApi.DTOs;
+using BikeStoreWebApi.DTOs.Order;
+using BikeStoreWebApi.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,13 @@ namespace BikeStoreWebApi.Mapping
             // Domain to Resource
             CreateMap<Bike, BikeDto>();
             CreateMap<Bike, SaveBikeDto>();
+            CreateMap<Order, SaveOrderDto>();
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, SaveCategoryDto>();
             CreateMap<Brand, BrandDto>();
             CreateMap<Brand, SaveBrandDto>();
             CreateMap<User, UserDto>();
-            CreateMap<Role, RoleDto>();
+            CreateMap<Order, OrderDto>();
 
             // Resource to Domain
             CreateMap<BikeDto, Bike>();
@@ -29,7 +32,9 @@ namespace BikeStoreWebApi.Mapping
             CreateMap<SaveCategoryDto, Category>();
             CreateMap<BrandDto, Brand>();
             CreateMap<SaveBrandDto, Brand>();
-            CreateMap<RegistrationDto, User>();
+            CreateMap<RegistrationUserDto, User>();
+            CreateMap<OrderDto, Order>();
+            CreateMap<SaveOrderDto, Order>();
         }
     }
 }

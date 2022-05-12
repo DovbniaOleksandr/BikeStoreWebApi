@@ -3,6 +3,7 @@ using BikeStore.Core.Services;
 using BikeStoreEF;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,18 @@ namespace BikeStore.Services
         {
             _unitOfWork.Bikes.Remove(bike);
             await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<IEnumerable<Bike>> FilterBikes(BikeFilters filters)
+        {
+            return await _unitOfWork.Bikes
+                .FindAllWithBrandAndCategoryAsync(b => 
+                (filters.Categories.Contains(b.CategoryId) || filters.Categories == null) &&
+                (filters.Brands.Contains(b.BrandId) || filters.Brands == null) &&
+                (b.Name.Contains(filters.Name) || filters.Name == null) &&
+                (b.ModelYear == filters.ModelYear || filters.ModelYear == null) &&
+                (b.Price >= filters.MinPrice || filters.MinPrice == null) &&
+                (b.Price <= filters.MaxPrice || filters.MaxPrice == null));
         }
 
         public async Task<IEnumerable<Bike>> GetAllBikes()

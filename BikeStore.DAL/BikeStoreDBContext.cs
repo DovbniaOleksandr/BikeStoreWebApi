@@ -1,5 +1,6 @@
 ﻿using BikeStore.Core.Models;
 using BikeStore.DAL.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,12 @@ using System.Text;
 
 namespace BikeStore.DAL
 {
-    public class BikeStoreDBContext: DbContext
+    public class BikeStoreDBContext: IdentityDbContext<User, Role, int>
     {
         public DbSet<Bike> Bikes { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public BikeStoreDBContext(DbContextOptions<BikeStoreDBContext> options)
             : base(options)
@@ -21,6 +21,9 @@ namespace BikeStore.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base
+                .OnModelCreating(modelBuilder);
+
             modelBuilder
                 .ApplyConfiguration(new BikeConfigurations());
 
@@ -31,10 +34,7 @@ namespace BikeStore.DAL
                 .ApplyConfiguration(new BrandConfigurations());
 
             modelBuilder
-                .ApplyConfiguration(new RoleConfigurations());
-
-            modelBuilder
-                .ApplyConfiguration(new UserConfigurations());
+                .ApplyConfiguration(new OrderConfigurations());
 
             modelBuilder
                 .Seed();
@@ -129,26 +129,6 @@ namespace BikeStore.DAL
                 {
                     CategoryId = 7,
                     Name = "Road Bikes"
-                }
-            });
-            modelBuilder.Entity<Role>().HasData(new List<Role>() {
-                new Role()
-                {
-                    Id = 1,
-                    Name = "User"
-                },
-                new Role()
-                {
-                    Id = 2,
-                    Name = "Admin"
-                }
-            });
-            modelBuilder.Entity<User>().HasData(new List<User>() {
-                new User()
-                {
-                    Id = 1,
-                    Email = "admin@gmail.com",
-                    Password = "admin"
                 }
             });
         }

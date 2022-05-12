@@ -1,4 +1,5 @@
-﻿using BikeStoreWebApi.DTOs;
+﻿using BikeStore.Core.Enums;
+using BikeStoreWebApi.DTOs.User;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -7,17 +8,21 @@ using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.Validators
 {
-    public class RegistationValidator: AbstractValidator<RegistrationDto>
+    public class UserRegistationValidator : AbstractValidator<RegistrationUserDto>
     {
-        List<string> adminRoles = new List<string>() { "Admin" };
+        List<string> adminRoles = new List<string>() { Roles.Admin };
 
-        public RegistationValidator()
+        public UserRegistationValidator()
         {
+            RuleFor(l => l.UserName)
+                .NotEmpty()
+                .MaximumLength(50);
+
             RuleFor(l => l.Email)
                 .NotEmpty()
                 .MaximumLength(50)
                 .EmailAddress();
-            
+
             RuleFor(l => l.Password)
                 .NotEmpty().WithMessage("Your password cannot be empty")
                 .MinimumLength(8).WithMessage("Your password length must be at least 8.")
@@ -28,7 +33,7 @@ namespace BikeStoreWebApi.Validators
 
             RuleFor(l => l.Role)
                 .NotEmpty()
-                .Must(x => !adminRoles.Contains(x)).WithMessage("You are not allow to register users with admin role.");
+                .Must(x => !adminRoles.Contains(x)).WithMessage("You are not allow to register users with this role.");
         }
     }
 }

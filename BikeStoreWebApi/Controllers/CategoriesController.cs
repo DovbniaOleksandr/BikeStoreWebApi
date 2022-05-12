@@ -44,7 +44,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(categoryDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("")]
         public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] SaveCategoryDto saveCategoryDto)
         {
@@ -65,7 +65,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(categoryDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
@@ -88,7 +88,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(updatedCategoryDto);
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
