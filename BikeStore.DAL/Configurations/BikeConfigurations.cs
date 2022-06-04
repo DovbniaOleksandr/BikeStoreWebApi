@@ -25,10 +25,6 @@ namespace BikeStore.DAL.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
-            builder.Property(b => b.BikePhoto)
-                .HasMaxLength(250)
-                .IsUnicode(false);
-
             builder.HasOne(b => b.Brand)
                 .WithMany(b => b.Bikes)
                 .HasForeignKey(d => d.BrandId);
@@ -38,7 +34,7 @@ namespace BikeStore.DAL.Configurations
                 .HasForeignKey(b => b.CategoryId);
 
             builder.Property(b => b.Description)
-                .IsRequired()
+                .HasMaxLength(150)
                 .IsUnicode(false);
         }
     }

@@ -4,14 +4,16 @@ using BikeStore.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BikeStore.DAL.Migrations
 {
     [DbContext(typeof(BikeStoreDBContext))]
-    partial class BikeStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220523102255_changed_photo")]
+    partial class changed_photo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

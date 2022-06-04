@@ -16,8 +16,16 @@ namespace BikeStore.Services
             this._unitOfWork = unitOfWork;
         }
 
+        public async Task CompleteOrder(Order order)
+        {
+            order.IsCompleted = true;
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task<Order> CreateOrder(Order orderToCreate)
         {
+            orderToCreate.CreatedAt = DateTime.Now;
+
             await _unitOfWork.Orders.AddAsync(orderToCreate);
             await _unitOfWork.SaveAsync();
 

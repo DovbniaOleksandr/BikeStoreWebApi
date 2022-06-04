@@ -53,7 +53,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(orderDtos);
         }
 
-        [HttpPost("")]
+        [HttpPost("create")]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] SaveOrderDto saveOrderDto)
         {
             var validator = new OrderValidator();
@@ -71,6 +71,20 @@ namespace BikeStoreWebApi.Controllers
             var orderDto = _mapper.Map<Order, OrderDto>(order);
 
             return Ok(orderDto);
+        }
+
+        [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
+        [HttpPost("complete")]
+        public async Task<ActionResult<OrderDto>> CompleteOrder(int id)
+        {
+            var order = await _orderService.GetById(id);
+
+            if (order == null)
+                return NotFound();
+
+            await _orderService.CompleteOrder(order);
+
+            return NoContent();
         }
     }
 }

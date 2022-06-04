@@ -11,9 +11,6 @@ namespace BikeStoreWebApi.Validators
     {
         public OrderValidator()
         {
-            RuleFor(b => b.CreatedAt)
-                .NotEmpty();
-
             RuleFor(b => b.BikeId)
                 .NotEmpty().WithMessage("'Bike Id' must not be 0.");
 

@@ -11,5 +11,6 @@ namespace BikeStore.Core.Services
         Task<IEnumerable<Order>> GetAll();
         Task<Order> GetById(int id);
         Task<Order> CreateOrder(Order orderToCreate);
+        Task CompleteOrder(Order order);
     }
 }

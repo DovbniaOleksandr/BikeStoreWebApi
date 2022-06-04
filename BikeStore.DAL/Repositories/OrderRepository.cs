@@ -23,6 +23,9 @@ namespace BikeStore.DAL.Repositories
         {
             return await BikeStoreDBContext.Orders
                 .Include(o => o.Bike)
+                    .ThenInclude(b => b.Category)
+                .Include(o => o.Bike)
+                    .ThenInclude(b => b.Brand)
                 .Include(o => o.User)
                 .ToListAsync<Order>();
         }

@@ -36,8 +36,8 @@ namespace BikeStore.Services
         {
             return await _unitOfWork.Bikes
                 .FindAllWithBrandAndCategoryAsync(b => 
-                (filters.Categories.Contains(b.CategoryId) || filters.Categories == null) &&
-                (filters.Brands.Contains(b.BrandId) || filters.Brands == null) &&
+                (filters.Categories.Contains(b.CategoryId) || !filters.Categories.Any()) &&
+                (filters.Brands.Contains(b.BrandId) || !filters.Brands.Any()) &&
                 (b.Name.Contains(filters.Name) || filters.Name == null) &&
                 (b.ModelYear == filters.ModelYear || filters.ModelYear == null) &&
                 (b.Price >= filters.MinPrice || filters.MinPrice == null) &&

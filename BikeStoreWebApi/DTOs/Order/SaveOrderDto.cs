@@ -9,6 +9,5 @@ namespace BikeStoreWebApi.DTOs.Order
     {
         public int UserId { get; set; }
         public int BikeId { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

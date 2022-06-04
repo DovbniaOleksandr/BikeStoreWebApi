@@ -16,7 +16,7 @@ namespace BikeStoreWebApi.Validators
                 .MaximumLength(100);
 
             RuleFor(b => b.Description)
-                .NotEmpty();
+                .MaximumLength(150);
 
             RuleFor(b => b.CategoryId)
                 .NotEmpty().WithMessage("'Category Id' must not be 0.");

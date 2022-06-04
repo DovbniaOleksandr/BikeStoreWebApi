@@ -26,7 +26,7 @@ namespace BikeStoreWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("")]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<BikeDto>>> GetAllBikes()
         {
             var bikes = await _bikeService.GetAllBikesWithCategoryAndBrand();
@@ -54,7 +54,7 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
-        [HttpPost("")]
+        [HttpPost]
         public async Task<ActionResult<BikeDto>> CreateBike([FromBody] SaveBikeDto saveBikeDto)
         {
             var validator = new BikeValidator();
@@ -67,9 +67,7 @@ namespace BikeStoreWebApi.Controllers
 
             var newBike = await _bikeService.CreateBike(bikeToCreate);
 
-            var bike = await _bikeService.GetBikeWithCategoryAndBrand(newBike.BikeId);
-
-            var bikeDto = _mapper.Map<Bike, BikeDto>(bike);
+            var bikeDto = _mapper.Map<Bike, BikeDto>(newBike);
 
             return Ok(bikeDto);
         }
@@ -101,9 +99,6 @@ namespace BikeStoreWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBike(int id)
         {
-            if (id == 0)
-                return BadRequest();
-
             var bike = await _bikeService.GetBikeById(id);
 
             if (bike == null)
