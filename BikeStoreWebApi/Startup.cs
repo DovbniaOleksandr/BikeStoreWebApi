@@ -4,6 +4,7 @@ using BikeStore.DAL;
 using BikeStore.Services;
 using BikeStoreEF;
 using BikeStoreWebApi.Extensions;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,12 @@ namespace BikeStoreWebApi
         {
             services.RegisterServices();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    s.ImplicitlyValidateChildProperties = true;
+                });
 
             services.AddSwaggerGen(c =>
             {

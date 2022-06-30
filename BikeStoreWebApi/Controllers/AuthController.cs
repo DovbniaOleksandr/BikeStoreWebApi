@@ -52,6 +52,9 @@ namespace BikeStoreWebApi.Controllers
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
+            if (user == null)
+                return Unauthorized("Wrong user name.");
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
 
             if(result.Succeeded)
@@ -64,7 +67,8 @@ namespace BikeStoreWebApi.Controllers
                 {
                     Roles = userRoles,
                     UserName = user.UserName,
-                    Token = token
+                    Token = token,
+                    UserId = user.Id
                 };
 
                 return Ok(response);
@@ -76,12 +80,6 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegistrationUserDto registrationUserDto)
         {
-            var validator = new UserRegistationValidator();
-            var validationResult = await validator.ValidateAsync(registrationUserDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var user = _mapper.Map<RegistrationUserDto, User>(registrationUserDto);
 
             var result = await _userManager.CreateAsync(user, registrationUserDto.Password);
@@ -100,15 +98,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("register_admin")]
-        public async Task<ActionResult> RegisterAdmin([FromBody] RegistrationUserDto registrationUserDto)
+        public async Task<ActionResult> RegisterAdmin([FromBody] AdminRegistrationDto registrationUserDto)
         {
-            var validator = new AdminRegistationValidator();
-            var validationResult = await validator.ValidateAsync(registrationUserDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            var user = _mapper.Map<RegistrationUserDto, User>(registrationUserDto);
+            var user = _mapper.Map<AdminRegistrationDto, User>(registrationUserDto);
 
             var result = await _userManager.CreateAsync(user, registrationUserDto.Password);
 

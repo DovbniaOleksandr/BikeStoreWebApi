@@ -31,6 +31,9 @@ namespace BikeStoreWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrderById(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var order = await _orderService.GetById(id);
 
             if(order == null)
@@ -56,12 +59,6 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] SaveOrderDto saveOrderDto)
         {
-            var validator = new OrderValidator();
-            var validationResult = await validator.ValidateAsync(saveOrderDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var orderToCreate = _mapper.Map<SaveOrderDto, Order>(saveOrderDto);
 
             var newOrder = await _orderService.CreateOrder(orderToCreate);
@@ -70,13 +67,16 @@ namespace BikeStoreWebApi.Controllers
 
             var orderDto = _mapper.Map<Order, OrderDto>(order);
 
-            return Ok(orderDto);
+            return CreatedAtAction(nameof(CreateOrder), orderDto);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
-        [HttpPost("complete")]
+        [HttpPost("complete/{id}")]
         public async Task<ActionResult<OrderDto>> CompleteOrder(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var order = await _orderService.GetById(id);
 
             if (order == null)

@@ -3,6 +3,7 @@ using BikeStore.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,26 @@ namespace BikeStore.DAL.Repositories
                 .Include(o => o.Bike)
                     .ThenInclude(b => b.Brand)
                 .Include(o => o.User)
-                .ToListAsync<Order>();
+                .Select(o => new Order
+                {
+                    Bike = new Bike
+                    {
+                        BikeId = o.Bike.BikeId,
+                        Name = o.Bike.Name,
+                        ModelYear = o.Bike.ModelYear,
+                        Description = o.Bike.Description,
+                        Brand = o.Bike.Brand,
+                        BrandId = o.Bike.BrandId,
+                        Category = o.Bike.Category,
+                        CategoryId = o.Bike.CategoryId,
+                        Price = o.Bike.Price
+                    },
+                    User = o.User,
+                    CreatedAt = o.CreatedAt,
+                    IsCompleted = o.IsCompleted,
+                    Id = o.Id
+                })
+                .ToListAsync();
         }
 
         public async Task<Order> GetById(int id)

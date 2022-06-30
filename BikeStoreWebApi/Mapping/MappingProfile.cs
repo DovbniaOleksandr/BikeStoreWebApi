@@ -33,6 +33,7 @@ namespace BikeStoreWebApi.Mapping
             CreateMap<BrandDto, Brand>();
             CreateMap<SaveBrandDto, Brand>();
             CreateMap<RegistrationUserDto, User>();
+            CreateMap<AdminRegistrationDto, User>();
             CreateMap<OrderDto, Order>();
             CreateMap<SaveOrderDto, Order>();
         }

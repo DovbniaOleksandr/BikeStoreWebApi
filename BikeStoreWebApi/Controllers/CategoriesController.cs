@@ -38,6 +38,9 @@ namespace BikeStoreWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategoryById(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var category = await _categoryService.GetCategoryById(id);
             var categoryDto = _mapper.Map<Category, CategoryDto>(category);
 
@@ -48,12 +51,6 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost("")]
         public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] SaveCategoryDto saveCategoryDto)
         {
-            var validator = new CategoryValidator();
-            var validationResult = await validator.ValidateAsync(saveCategoryDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var categoryToCreate = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
 
             var newCategory = await _categoryService.CreateCategory(categoryToCreate);
@@ -62,18 +59,15 @@ namespace BikeStoreWebApi.Controllers
 
             var categoryDto = _mapper.Map<Category, CategoryDto>(category);
 
-            return Ok(categoryDto);
+            return CreatedAtAction(nameof(CreateCategory), categoryDto);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
-            var validator = new CategoryValidator();
-            var validationResult = await validator.ValidateAsync(saveCategoryDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            if (id == 0)
+                return BadRequest();
 
             var category = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
 

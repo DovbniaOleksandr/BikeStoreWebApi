@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.DTOs.User
 {
-    public class LoginResponse
+    public class AdminRegistrationDto
     {
-        public int UserId { get; set; }
-        public string Token { get; set; }
-        public IList<string> Roles { get; set; }
         public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
     }
 }

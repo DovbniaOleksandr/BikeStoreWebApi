@@ -38,6 +38,9 @@ namespace BikeStoreWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BrandDto>> GetBrandById(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var brand = await _brandService.GetBrandById(id);
             var brandDto = _mapper.Map<Brand, BrandDto>(brand);
 
@@ -48,12 +51,6 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost("")]
         public async Task<ActionResult<BrandDto>> CreateBrand([FromBody] SaveBrandDto saveBrandDto)
         {
-            var validator = new BrandValidator();
-            var validationResult = await validator.ValidateAsync(saveBrandDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var brandToCreate = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
 
             var newBrand = await _brandService.CreateBrand(brandToCreate);
@@ -62,18 +59,15 @@ namespace BikeStoreWebApi.Controllers
 
             var brandDto = _mapper.Map<Brand, BrandDto>(brand);
 
-            return Ok(brandDto);
+            return CreatedAtAction(nameof(CreateBrand), brandDto);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<BrandDto>> UpdateBrand(int id, [FromBody] SaveBrandDto saveBrandDto)
         {
-            var validator = new BrandValidator();
-            var validationResult = await validator.ValidateAsync(saveBrandDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            if (id == 0)
+                return BadRequest();
 
             var brand = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
 

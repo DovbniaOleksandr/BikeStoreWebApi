@@ -47,7 +47,14 @@ namespace BikeStoreWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BikeDto>> GetBikeById(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var bike = await _bikeService.GetBikeWithCategoryAndBrand(id);
+
+            if (bike == null)
+                return NotFound();
+
             var bikeDto = _mapper.Map<Bike, BikeDto>(bike);
 
             return Ok(bikeDto);
@@ -57,30 +64,21 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<BikeDto>> CreateBike([FromBody] SaveBikeDto saveBikeDto)
         {
-            var validator = new BikeValidator();
-            var validationResult = await validator.ValidateAsync(saveBikeDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
             var bikeToCreate = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
 
             var newBike = await _bikeService.CreateBike(bikeToCreate);
 
             var bikeDto = _mapper.Map<Bike, BikeDto>(newBike);
 
-            return Ok(bikeDto);
+            return CreatedAtAction(nameof(CreateBike), bikeDto);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
         public async Task<ActionResult<BikeDto>> UpdateBike(int id, [FromBody] SaveBikeDto saveBikeDto)
         {
-            var validator = new BikeValidator();
-            var validationResult = await validator.ValidateAsync(saveBikeDto);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            if (id == 0)
+                return BadRequest();
 
             var bike = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
 
@@ -99,6 +97,9 @@ namespace BikeStoreWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBike(int id)
         {
+            if (id == 0)
+                return BadRequest();
+
             var bike = await _bikeService.GetBikeById(id);
 
             if (bike == null)
