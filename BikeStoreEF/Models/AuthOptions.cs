@@ -11,6 +11,7 @@ namespace BikeStore.Core.Models
         public string Audience { get; set; }
         public string Secret { get; set; }
         public int TokenLifetime { get; set; }
+        public int RefreshTokenLifetime { get; set; }
 
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {

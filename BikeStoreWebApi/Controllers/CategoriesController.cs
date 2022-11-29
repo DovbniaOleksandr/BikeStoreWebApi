@@ -30,9 +30,8 @@ namespace BikeStoreWebApi.Controllers
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories()
         {
             var categories = await _categoryService.GetAllCategories();
-            var categoryDtos = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDto>>(categories);
 
-            return Ok(categoryDtos);
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]
@@ -42,24 +41,19 @@ namespace BikeStoreWebApi.Controllers
                 return BadRequest();
 
             var category = await _categoryService.GetCategoryById(id);
-            var categoryDto = _mapper.Map<Category, CategoryDto>(category);
 
-            return Ok(categoryDto);
+            return Ok(category);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("")]
         public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] SaveCategoryDto saveCategoryDto)
         {
-            var categoryToCreate = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
-
-            var newCategory = await _categoryService.CreateCategory(categoryToCreate);
+            var newCategory = await _categoryService.CreateCategory(saveCategoryDto);
 
             var category = await _categoryService.GetCategoryById(newCategory.CategoryId);
 
-            var categoryDto = _mapper.Map<Category, CategoryDto>(category);
-
-            return CreatedAtAction(nameof(CreateCategory), categoryDto);
+            return CreatedAtAction(nameof(CreateCategory), category);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -69,17 +63,14 @@ namespace BikeStoreWebApi.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var category = _mapper.Map<SaveCategoryDto, Category>(saveCategoryDto);
-
-            if (!(await _categoryService.UpdateCategory(id, category)))
+            if (!(await _categoryService.UpdateCategory(id, saveCategoryDto)))
             {
                 return NotFound();
             }
 
             var updatedCategory = await _categoryService.GetCategoryById(id);
-            var updatedCategoryDto = _mapper.Map<Category, CategoryDto>(updatedCategory);
 
-            return Ok(updatedCategoryDto);
+            return Ok(updatedCategory);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]

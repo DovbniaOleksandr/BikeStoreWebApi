@@ -66,7 +66,8 @@ namespace BikeStoreWebApi
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                     options.Lockout.MaxFailedAccessAttempts = 5;
                 }).AddEntityFrameworkStores<BikeStoreDBContext>();
-            services.ConfigureAuthenticationService(Configuration.GetSection("Auth"));
+
+               services.ConfigureAuthenticationService(Configuration.GetSection("Auth"));
 
             services.AddCors(options =>
             {

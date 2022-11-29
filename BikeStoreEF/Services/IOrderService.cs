@@ -1,4 +1,5 @@
 ﻿using BikeStore.Core.Models;
+using BikeStoreWebApi.DTOs.Order;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,9 @@ namespace BikeStore.Core.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<Order>> GetAll();
-        Task<Order> GetById(int id);
-        Task<Order> CreateOrder(Order orderToCreate);
-        Task CompleteOrder(Order order);
+        Task<IEnumerable<OrderDto>> GetAll();
+        Task<OrderDto> GetById(int id);
+        Task<OrderDto> CreateOrder(SaveOrderDto orderToCreate);
+        Task<bool> CompleteOrder(int id);
     }
 }

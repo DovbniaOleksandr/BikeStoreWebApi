@@ -1,6 +1,8 @@
-﻿using BikeStore.Core.Models;
+﻿using AutoMapper;
+using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStoreEF;
+using BikeStoreWebApi.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,29 +14,35 @@ namespace BikeStore.Services
     public class BikeService : IBikeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public BikeService(IUnitOfWork unitOfWork)
+        public BikeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<Bike> CreateBike(Bike newBike)
+        public async Task<BikeDto> CreateBike(SaveBikeDto newBike)
         {
-            await _unitOfWork.Bikes.AddAsync(newBike);
+            var bikeToCreate = _mapper.Map<SaveBikeDto, Bike>(newBike);
+
+            await _unitOfWork.Bikes.AddAsync(bikeToCreate);
             await _unitOfWork.SaveAsync();
 
-            return newBike;
+            return _mapper.Map<Bike, BikeDto>(bikeToCreate);
         }
 
         public async Task DeleteBike(Bike bike)
         {
-            _unitOfWork.Bikes.Remove(bike);
+            var bikeToDelete = await _unitOfWork.Bikes.GetByIdAsync(bike.BikeId);
+
+            _unitOfWork.Bikes.Remove(bikeToDelete);
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<IEnumerable<Bike>> FilterBikes(BikeFilters filters)
+        public async Task<IEnumerable<BikeDto>> FilterBikes(BikeFilters filters)
         {
-            return await _unitOfWork.Bikes
+            var filteredBikes = await _unitOfWork.Bikes
                 .FindAllWithBrandAndCategoryAsync(b => 
                 (filters.Categories.Contains(b.CategoryId) || !filters.Categories.Any()) &&
                 (filters.Brands.Contains(b.BrandId) || !filters.Brands.Any()) &&
@@ -42,34 +50,46 @@ namespace BikeStore.Services
                 (b.ModelYear == filters.ModelYear || filters.ModelYear == null) &&
                 (b.Price >= filters.MinPrice || filters.MinPrice == null) &&
                 (b.Price <= filters.MaxPrice || filters.MaxPrice == null));
+
+            return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(filteredBikes);
         }
 
-        public async Task<IEnumerable<Bike>> GetAllBikes()
+        public async Task<IEnumerable<BikeDto>> GetAllBikes()
         {
-            return await _unitOfWork.Bikes.GetAllAsync();
+            var bikes = await _unitOfWork.Bikes.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
 
-        public async Task<IEnumerable<Bike>> GetAllBikesWithCategoryAndBrand()
+        public async Task<IEnumerable<BikeDto>> GetAllBikesWithCategoryAndBrand()
         {
-            return await _unitOfWork.Bikes.GetAllWithBrandAndCategoryAsync();
+            var bikes = await _unitOfWork.Bikes.GetAllWithBrandAndCategoryAsync();
+
+            return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
 
-        public async Task<Bike> GetBikeById(int id)
+        public async Task<BikeDto> GetBikeById(int id)
         {
-            return await _unitOfWork.Bikes.GetByIdAsync(id);
+            var bike = await _unitOfWork.Bikes.GetByIdAsync(id);
+
+            return _mapper.Map<Bike, BikeDto>(bike);
         }
 
-        public IEnumerable<Bike> GetBikesByBrand(string brand)
+        public IEnumerable<BikeDto> GetBikesByBrand(string brand)
         {
-            return _unitOfWork.Bikes.Find(x => x.Brand.BrandName == brand);
+            var bikes = _unitOfWork.Bikes.Find(x => x.Brand.BrandName == brand);
+
+            return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
 
-        public async Task<Bike> GetBikeWithCategoryAndBrand(int id)
+        public async Task<BikeDto> GetBikeWithCategoryAndBrand(int id)
         {
-            return await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
+            var bike = await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
+
+            return _mapper.Map<Bike, BikeDto>(bike);
         }
 
-        public async Task<bool> UpdateBike(int id, Bike bike)
+        public async Task<bool> UpdateBike(int id, SaveBikeDto bike)
         {
             if (bike == null)
             {
@@ -96,9 +116,11 @@ namespace BikeStore.Services
             return true;
         }
 
-        IEnumerable<Bike> IBikeService.GetBikesByCategory(string category)
+        public IEnumerable<BikeDto> GetBikesByCategory(string category)
         {
-            return _unitOfWork.Bikes.Find(x => x.Category.Name == category);
+            var bikes = _unitOfWork.Bikes.Find(x => x.Category.Name == category);
+
+            return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
     }
 }

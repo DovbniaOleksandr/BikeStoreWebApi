@@ -30,18 +30,16 @@ namespace BikeStoreWebApi.Controllers
         public async Task<ActionResult<IEnumerable<BikeDto>>> GetAllBikes()
         {
             var bikes = await _bikeService.GetAllBikesWithCategoryAndBrand();
-            var bikeDtos = _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
 
-            return Ok(bikeDtos);
+            return Ok(bikes);
         }
 
         [HttpPost("filter")]
         public async Task<ActionResult<IEnumerable<BikeDto>>> FilterBikes([FromBody] BikeFilters filters)
         {
             var bikes = await _bikeService.FilterBikes(filters);
-            var bikeDtos = _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
 
-            return Ok(bikeDtos);
+            return Ok(bikes);
         }
 
         [HttpGet("{id}")]
@@ -55,22 +53,16 @@ namespace BikeStoreWebApi.Controllers
             if (bike == null)
                 return NotFound();
 
-            var bikeDto = _mapper.Map<Bike, BikeDto>(bike);
-
-            return Ok(bikeDto);
+            return Ok(bike);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost]
         public async Task<ActionResult<BikeDto>> CreateBike([FromBody] SaveBikeDto saveBikeDto)
         {
-            var bikeToCreate = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
+            var newBike = await _bikeService.CreateBike(saveBikeDto);
 
-            var newBike = await _bikeService.CreateBike(bikeToCreate);
-
-            var bikeDto = _mapper.Map<Bike, BikeDto>(newBike);
-
-            return CreatedAtAction(nameof(CreateBike), bikeDto);
+            return CreatedAtAction(nameof(CreateBike), newBike);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -80,17 +72,14 @@ namespace BikeStoreWebApi.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var bike = _mapper.Map<SaveBikeDto, Bike>(saveBikeDto);
-
-            if(!(await _bikeService.UpdateBike(id, bike)))
+            if(!(await _bikeService.UpdateBike(id, saveBikeDto)))
             {
                 return NotFound();
             }
 
             var updatedBike = await _bikeService.GetBikeWithCategoryAndBrand(id);
-            var updatedBikeDto = _mapper.Map<Bike, BikeDto>(updatedBike);
 
-            return Ok(updatedBikeDto);
+            return Ok(updatedBike);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -105,7 +94,9 @@ namespace BikeStoreWebApi.Controllers
             if (bike == null)
                 return NotFound();
 
-            await _bikeService.DeleteBike(bike);
+            var bikeToDelete = _mapper.Map<BikeDto, Bike>(bike);
+
+            await _bikeService.DeleteBike(bikeToDelete);
 
             return NoContent();
         }

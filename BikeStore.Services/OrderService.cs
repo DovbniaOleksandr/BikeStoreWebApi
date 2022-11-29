@@ -1,6 +1,8 @@
-﻿using BikeStore.Core.Models;
+﻿using AutoMapper;
+using BikeStore.Core.Models;
 using BikeStore.Core.Services;
 using BikeStoreEF;
+using BikeStoreWebApi.DTOs.Order;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,35 +13,51 @@ namespace BikeStore.Services
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task CompleteOrder(Order order)
+        public async Task<bool> CompleteOrder(int id)
         {
+            var order = await _unitOfWork.Orders.GetById(id);
+
+            if (order == null)
+                return false;
+
             order.IsCompleted = true;
             await _unitOfWork.SaveAsync();
+
+            return true;
         }
 
-        public async Task<Order> CreateOrder(Order orderToCreate)
+        public async Task<OrderDto> CreateOrder(SaveOrderDto orderToCreate)
         {
-            orderToCreate.CreatedAt = DateTime.Now;
+            var order = _mapper.Map<SaveOrderDto, Order>(orderToCreate);
 
-            await _unitOfWork.Orders.AddAsync(orderToCreate);
+            order.CreatedAt = DateTime.Now;
+
+            await _unitOfWork.Orders.AddAsync(order);
             await _unitOfWork.SaveAsync();
 
-            return orderToCreate;
+            return _mapper.Map<Order, OrderDto>(order);
         }
 
-        public async Task<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<OrderDto>> GetAll()
         {
-            return await _unitOfWork.Orders.GetAll();
+            var orders = await _unitOfWork.Orders.GetAll();
+
+            return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
         }
 
-        public async Task<Order> GetById(int id)
+        public async Task<OrderDto> GetById(int id)
         {
-            return await _unitOfWork.Orders.GetById(id);
+            var order = await _unitOfWork.Orders.GetById(id);
+
+            return _mapper.Map<Order, OrderDto>(order);
         }
     }
 }

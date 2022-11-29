@@ -41,9 +41,7 @@ namespace BikeStoreWebApi.Controllers
                 return NotFound(id);
             }
 
-            var orderDto = _mapper.Map<Order, OrderDto>(order);
-
-            return Ok(orderDto);
+            return Ok(order);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -51,23 +49,18 @@ namespace BikeStoreWebApi.Controllers
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders()
         {
             var orders = await _orderService.GetAll();
-            var orderDtos = _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
 
-            return Ok(orderDtos);
+            return Ok(orders);
         }
 
-        [HttpPost("create")]
+        [HttpPost("create"), Authorize]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] SaveOrderDto saveOrderDto)
         {
-            var orderToCreate = _mapper.Map<SaveOrderDto, Order>(saveOrderDto);
+            var newOrder = await _orderService.CreateOrder(saveOrderDto);
 
-            var newOrder = await _orderService.CreateOrder(orderToCreate);
+            var order = await _orderService.GetById(newOrder.Id);
 
-            var order = await _orderService.GetById(newOrder.BikeId);
-
-            var orderDto = _mapper.Map<Order, OrderDto>(order);
-
-            return CreatedAtAction(nameof(CreateOrder), orderDto);
+            return CreatedAtAction(nameof(CreateOrder), order);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -77,12 +70,8 @@ namespace BikeStoreWebApi.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var order = await _orderService.GetById(id);
-
-            if (order == null)
+            if (!(await _orderService.CompleteOrder(id)))
                 return NotFound();
-
-            await _orderService.CompleteOrder(order);
 
             return NoContent();
         }

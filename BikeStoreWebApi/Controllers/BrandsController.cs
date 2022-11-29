@@ -30,9 +30,8 @@ namespace BikeStoreWebApi.Controllers
         public async Task<ActionResult<IEnumerable<BrandDto>>> GetAllBrands()
         {
             var brands = await _brandService.GetAllBrands();
-            var brandDtos = _mapper.Map<IEnumerable<Brand>, IEnumerable<BrandDto>>(brands);
 
-            return Ok(brandDtos);
+            return Ok(brands);
         }
 
         [HttpGet("{id}")]
@@ -42,24 +41,19 @@ namespace BikeStoreWebApi.Controllers
                 return BadRequest();
 
             var brand = await _brandService.GetBrandById(id);
-            var brandDto = _mapper.Map<Brand, BrandDto>(brand);
 
-            return Ok(brandDto);
+            return Ok(brand);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("")]
         public async Task<ActionResult<BrandDto>> CreateBrand([FromBody] SaveBrandDto saveBrandDto)
         {
-            var brandToCreate = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
-
-            var newBrand = await _brandService.CreateBrand(brandToCreate);
+            var newBrand = await _brandService.CreateBrand(saveBrandDto);
 
             var brand = await _brandService.GetBrandById(newBrand.BrandId);
 
-            var brandDto = _mapper.Map<Brand, BrandDto>(brand);
-
-            return CreatedAtAction(nameof(CreateBrand), brandDto);
+            return CreatedAtAction(nameof(CreateBrand), brand);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
@@ -69,17 +63,14 @@ namespace BikeStoreWebApi.Controllers
             if (id == 0)
                 return BadRequest();
 
-            var brand = _mapper.Map<SaveBrandDto, Brand>(saveBrandDto);
-
-            if (!(await _brandService.UpdateBrand(id, brand)))
+            if (!(await _brandService.UpdateBrand(id, saveBrandDto)))
             {
                 return NotFound();
             }
 
             var updatedBrand = await _brandService.GetBrandById(id);
-            var updatedBrandDto = _mapper.Map<Brand, BrandDto>(updatedBrand);
 
-            return Ok(updatedBrandDto);
+            return Ok(updatedBrand);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]

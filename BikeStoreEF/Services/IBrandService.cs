@@ -1,4 +1,5 @@
 ﻿using BikeStore.Core.Models;
+using BikeStoreWebApi.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,10 +9,10 @@ namespace BikeStore.Core.Services
 {
     public interface IBrandService
     {
-        Task<Brand> GetBrandById(int id);
-        Task<IEnumerable<Brand>> GetAllBrands();
-        Task<Brand> CreateBrand(Brand newBrand);
-        Task<bool> UpdateBrand(int id, Brand brand);
-        Task DeleteBrand(Brand brand);
+        Task<BrandDto> GetBrandById(int id);
+        Task<IEnumerable<BrandDto>> GetAllBrands();
+        Task<BrandDto> CreateBrand(SaveBrandDto newBrand);
+        Task<bool> UpdateBrand(int id, SaveBrandDto brand);
+        Task DeleteBrand(BrandDto brand);
     }
 }

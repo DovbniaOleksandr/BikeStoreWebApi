@@ -1,4 +1,5 @@
 ﻿using BikeStore.Core.Models;
+using BikeStoreWebApi.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,15 +9,15 @@ namespace BikeStore.Core.Services
 {
     public interface IBikeService
     {
-        Task<Bike> GetBikeById(int id);
-        IEnumerable<Bike> GetBikesByBrand(string brand);
-        IEnumerable<Bike> GetBikesByCategory(string category);
-        Task<IEnumerable<Bike>> GetAllBikes();
-        Task<IEnumerable<Bike>> GetAllBikesWithCategoryAndBrand();
-        Task<Bike> GetBikeWithCategoryAndBrand(int id);
-        Task<Bike> CreateBike(Bike newBike);
-        Task<bool> UpdateBike(int id, Bike bike);
+        Task<BikeDto> GetBikeById(int id);
+        IEnumerable<BikeDto> GetBikesByBrand(string brand);
+        IEnumerable<BikeDto> GetBikesByCategory(string category);
+        Task<IEnumerable<BikeDto>> GetAllBikes();
+        Task<IEnumerable<BikeDto>> GetAllBikesWithCategoryAndBrand();
+        Task<BikeDto> GetBikeWithCategoryAndBrand(int id);
+        Task<BikeDto> CreateBike(SaveBikeDto newBike);
+        Task<bool> UpdateBike(int id, SaveBikeDto bike);
         Task DeleteBike(Bike bike);
-        Task<IEnumerable<Bike>> FilterBikes(BikeFilters filters);
+        Task<IEnumerable<BikeDto>> FilterBikes(BikeFilters filters);
     }
 }
