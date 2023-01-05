@@ -53,7 +53,7 @@ namespace BikeStoreWebApi.Controllers
             return Ok(orders);
         }
 
-        [HttpPost("create"), Authorize]
+        [HttpPost("create"), Authorize(AuthenticationSchemes = AuthSchemes.JwtBearer)]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] SaveOrderDto saveOrderDto)
         {
             var newOrder = await _orderService.CreateOrder(saveOrderDto);
