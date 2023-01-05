@@ -1,0 +1,1 @@
+C:\Users\sasha\source\repos\BikeStoreWebApi\.sonarqube\out\5

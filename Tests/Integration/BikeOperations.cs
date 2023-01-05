@@ -33,8 +33,7 @@ namespace Tests.Integration
     {
         private WebApplicationFactory<Program> _applicationFactory;
 
-        [OneTimeSetUp]
-        public void Setup()
+        public BikeOperations()
         {
             _applicationFactory = new BikeApplication();
         }
@@ -210,6 +209,43 @@ namespace Tests.Integration
             var responseContent = await response.Content.ReadAsStringAsync();
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+        }
+
+        [Test]
+        public async Task Post_FilterBikes_Ok()
+        {
+            //Arrange
+            var filters = new BikeFilters()
+            {
+                Brands = new List<int>
+                {
+                    1
+                }, 
+                Categories = new List<int>
+                {
+                    1
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(filters);
+            using var message = new StringContent(json);
+
+            message.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+
+
+            using var client = _applicationFactory.CreateClient();
+
+            //Act
+            using var response = await client.PostAsync($"/api/Bikes/filter", message);
+
+            //Assert
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var bikeResponse = JsonConvert.DeserializeObject<IEnumerable<BikeDto>>(responseContent);
+
+            Assert.That(bikeResponse.All(b => filters.Brands.Contains(b.Brand.BrandId)));
+            Assert.That(bikeResponse.All(b => filters.Categories.Contains(b.Category.CategoryId)));
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Tests.Integration
     {
         string _testConnectionString = string.Empty;
         bool _useInMemoryDatabase = false;
+        string inMemoryDatabaseConnectionString = Guid.NewGuid().ToString();
 
         protected override IHost CreateHost(IHostBuilder builder)
         {
@@ -42,7 +43,7 @@ namespace Tests.Integration
                 {
                     services.AddDbContext<BikeStoreDBContext>(options =>
                     {
-                        options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                        options.UseInMemoryDatabase(inMemoryDatabaseConnectionString);
                     });
                 }
                 else

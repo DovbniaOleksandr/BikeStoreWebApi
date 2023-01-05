@@ -102,6 +102,18 @@ namespace Tests.Unit.Services
         }
 
         [Test]
+        public async Task UpdateBike_ArgumentException()
+        {
+            //Arrange
+            var id = _fixture.Create<int>();
+            var service = _fixture.Create<BikeService>();
+
+            //Act
+            //Assert
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await service.UpdateBike(id, null));
+        }
+
+        [Test]
         public async Task UpdateBike_ReturnsFalse()
         {
             //Arrange
@@ -119,6 +131,50 @@ namespace Tests.Unit.Services
             Assert.That(result, Is.False);
 
             _unitOfWorkMock.Verify(map => map.Bikes.GetWithBrandAndCategoryByIdAsync(id), Times.Once);
+        }
+
+        [Test]
+        public async Task GetAllBikes_ReturnsBikes()
+        {
+            //Arrange
+            var returnedBikesDto = _fixture.Create<List<BikeDto>>();
+
+            _mapperMock
+                .Setup(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()))
+                .Returns(returnedBikesDto);
+
+            var service = _fixture.Create<BikeService>();
+
+            //Act
+            var result = await service.GetAllBikes();
+
+            //Assert
+            Assert.That(result, Is.EqualTo(returnedBikesDto));
+
+            _unitOfWorkMock.Verify(map => map.Bikes.GetAllAsync(), Times.Once);
+            _mapperMock.Verify(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()), Times.Once);
+        }
+
+        [Test]
+        public async Task GetAllBikesWithCategoryAndBrand_ReturnsBikesWithCategoryAndBrand()
+        {
+            //Arrange
+            var returnedBikesDto = _fixture.Create<List<BikeDto>>();
+
+            _mapperMock
+                .Setup(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()))
+                .Returns(returnedBikesDto);
+
+            var service = _fixture.Create<BikeService>();
+
+            //Act
+            var result = await service.GetAllBikesWithCategoryAndBrand();
+
+            //Assert
+            Assert.That(result, Is.EqualTo(returnedBikesDto));
+
+            _unitOfWorkMock.Verify(map => map.Bikes.GetAllWithBrandAndCategoryAsync(), Times.Once);
+            _mapperMock.Verify(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()), Times.Once);
         }
 
         [Test]
@@ -142,6 +198,61 @@ namespace Tests.Unit.Services
             Assert.That(result, Is.EqualTo(returnedBikesDto));
 
             _unitOfWorkMock.Verify(map => map.Bikes.Find(x => x.Category.Name == category), Times.Once);
+            _mapperMock.Verify(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()), Times.Once);
+        }
+
+        [Test]
+        public void GetBikesByBrand_ReturnsBikeWithThatBrand()
+        {
+            //Arrange
+            var brand = _fixture.Create<string>();
+
+            var returnedBikesDto = _fixture.Create<List<BikeDto>>();
+
+            _mapperMock
+                .Setup(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()))
+                .Returns(returnedBikesDto);
+
+            var service = _fixture.Create<BikeService>();
+
+            //Act
+            var result = service.GetBikesByBrand(brand);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(returnedBikesDto));
+
+            _unitOfWorkMock.Verify(map => map.Bikes.Find(x => x.Brand.BrandName == brand), Times.Once);
+            _mapperMock.Verify(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()), Times.Once);
+        }
+
+        [Test]
+        public async Task FilterBikes__ReturnsBikeByFilter()
+        {
+            //Arrange
+            var filters = _fixture.Create<BikeFilters>();
+
+            var returnedBikesDto = _fixture.Create<List<BikeDto>>();
+
+            _mapperMock
+                .Setup(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()))
+                .Returns(returnedBikesDto);
+
+            var service = _fixture.Create<BikeService>();
+
+            //Act
+            var result = await service.FilterBikes(filters);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(returnedBikesDto));
+
+            _unitOfWorkMock.Verify(map => map.Bikes.FindAllWithBrandAndCategoryAsync(b =>
+                (filters.Categories.Contains(b.CategoryId) || !filters.Categories.Any()) &&
+                (filters.Brands.Contains(b.BrandId) || !filters.Brands.Any()) &&
+                (b.Name.Contains(filters.Name) || filters.Name == null) &&
+                (b.ModelYear == filters.ModelYear || filters.ModelYear == null) &&
+                (b.Price >= filters.MinPrice || filters.MinPrice == null) &&
+                (b.Price <= filters.MaxPrice || filters.MaxPrice == null)), Times.Once);
+
             _mapperMock.Verify(map => map.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(It.IsAny<IEnumerable<Bike>>()), Times.Once);
         }
 

@@ -128,6 +128,70 @@ namespace Tests.Unit.Controllers
             _bikeServiceMock.Verify(service => service.CreateBike(testSaveBikeDto), Times.Once);
         }
 
+        [Test]
+        public async Task UpdateBike_ReturnsOk()
+        {
+            //Arrange
+            var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
+            var testBikeDto = _fixture.Create<BikeDto>();
+
+            var id = testBikeDto.BikeId;
+
+            _bikeServiceMock.Setup(service => service.UpdateBike(id, testSaveBikeDto)).ReturnsAsync(true);
+            _bikeServiceMock.Setup(service => service.GetBikeWithCategoryAndBrand(id)).ReturnsAsync(testBikeDto);
+
+            var controller = new BikesController(_bikeServiceMock.Object, _mapperMock.Object);
+
+            //Act
+            var result = (await controller.UpdateBike(id, testSaveBikeDto)).Result as OkObjectResult;
+
+            //Assert
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(((BikeDto)result.Value).BikeId, Is.EqualTo(id));
+            Assert.That(result.StatusCode, Is.EqualTo(200));
+
+            _bikeServiceMock.Verify(service => service.UpdateBike(id, testSaveBikeDto), Times.Once);
+            _bikeServiceMock.Verify(service => service.GetBikeWithCategoryAndBrand(id), Times.Once);
+        }
+
+        [Test]
+        public async Task UpdateBike_ReturnsBadRequest()
+        {
+            //Arrange
+            var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
+
+            var id = 0;
+
+            var controller = new BikesController(_bikeServiceMock.Object, _mapperMock.Object);
+
+            //Act
+            var result = (await controller.UpdateBike(id, testSaveBikeDto)).Result as BadRequestResult;
+
+            //Assert
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+        }
+
+        [Test]
+        public async Task UpdateBike_ReturnsNotFound()
+        {
+            //Arrange
+            var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
+
+            var id = _fixture.Create<int>();
+
+            _bikeServiceMock.Setup(service => service.UpdateBike(id, testSaveBikeDto)).ReturnsAsync(false);
+
+            var controller = new BikesController(_bikeServiceMock.Object, _mapperMock.Object);
+
+            //Act
+            var result = (await controller.UpdateBike(id, testSaveBikeDto)).Result as NotFoundResult;
+
+            //Assert
+            Assert.That(result.StatusCode, Is.EqualTo(404));
+
+            _bikeServiceMock.Verify(service => service.UpdateBike(id, testSaveBikeDto), Times.Once);
+        }
+
         private static IFixture CreateFixture()
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization());

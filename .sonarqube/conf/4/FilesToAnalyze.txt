@@ -1,0 +1,17 @@
+﻿C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Helpers\Utilities.cs
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Integration\BikeApplication.cs
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Integration\BikeOperations.cs
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Unit\Controllers\BikeControllerTests.cs
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Unit\Repositories\BikeRepositoryTests.cs
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Unit\Services\BikeServiceTests.cs
+C:\Users\sasha\.nuget\packages\microsoft.net.test.sdk\16.9.4\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\sasha\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.exe
+C:\Users\sasha\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\testhost.dll
+C:\Users\sasha\.nuget\packages\microsoft.testplatform.testhost\16.9.4\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\NUnit3.TestAdapter.dll
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\NUnit3.TestAdapter.pdb
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\nunit.engine.dll
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\nunit.engine.api.dll
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\nunit.engine.core.dll
+C:\Users\sasha\.nuget\packages\nunit3testadapter\4.3.0\build\netcoreapp2.1\testcentric.engine.metadata.dll
+C:\Users\sasha\source\repos\BikeStoreWebApi\Tests\Properties\launchSettings.json
