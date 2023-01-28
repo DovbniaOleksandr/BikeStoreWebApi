@@ -14,10 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BikeStore.Services", "BikeS
 		{B12F60F1-D1C9-4D8E-91B7-C08E29688934} = {B12F60F1-D1C9-4D8E-91B7-C08E29688934}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{575EA2E4-4858-4454-A6C5-7449A5C872D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{575EA2E4-4858-4454-A6C5-7449A5C872D3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3FA95398-76A0-495B-A569-5365B406854C} = {3FA95398-76A0-495B-A569-5365B406854C}
 	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ECFE1AEA-1AC6-4456-8F99-7D634F3C6CC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{575EA2E4-4858-4454-A6C5-7449A5C872D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{575EA2E4-4858-4454-A6C5-7449A5C872D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{575EA2E4-4858-4454-A6C5-7449A5C872D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECFE1AEA-1AC6-4456-8F99-7D634F3C6CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFE1AEA-1AC6-4456-8F99-7D634F3C6CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFE1AEA-1AC6-4456-8F99-7D634F3C6CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFE1AEA-1AC6-4456-8F99-7D634F3C6CC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

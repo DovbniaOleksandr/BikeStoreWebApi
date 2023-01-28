@@ -51,7 +51,7 @@ namespace BikeStoreWebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeStoreWebApi", Version = "v1" });
             });
 
-            services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BikeStoreWebApi"), x => x.MigrationsAssembly("BikeStore.DAL")));
+            services.ConfigureDatabase();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddIdentity<User, Role>(options => 
@@ -82,10 +82,11 @@ namespace BikeStoreWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BikeStoreDBContext context)
         {
             if (env.IsDevelopment())
             {
+                context.Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStoreWebApi v1"));
