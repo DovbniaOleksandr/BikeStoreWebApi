@@ -1,4 +1,5 @@
-﻿using BikeStore.Core.Models;
+﻿using BikeStore.Core.Enums;
+using BikeStore.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,7 @@ namespace BikeStore.DAL.Extensions
                     BrandName = "Trek"
                 }
             });
+
             modelBuilder.Entity<Category>().HasData(new List<Category>()
             {
                 new Category()
@@ -94,6 +96,23 @@ namespace BikeStore.DAL.Extensions
                 {
                     CategoryId = 7,
                     Name = "Road Bikes"
+                }
+            });
+
+            modelBuilder.Entity<Role>().HasData(new List<Role>()
+            {
+                new Role
+                {
+                    Id = 1,
+                    Name = Roles.Admin,
+                    NormalizedName = Roles.Admin.ToUpper()
+                },
+
+                new Role
+                {
+                    Id = 2,
+                    Name = Roles.User,
+                    NormalizedName = Roles.User.ToUpper()
                 }
             });
         }

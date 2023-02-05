@@ -86,10 +86,14 @@ namespace BikeStoreWebApi
         {
             if (env.IsDevelopment())
             {
-                context.Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStoreWebApi v1"));
+
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
             }
 
             app.ConfigureExceptionHandler();

@@ -9,11 +9,13 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
         - ACCEPT_EULA=Y
-        - MSSQL_SA_PASSWORD=Pa55word
+        - MSSQL_SA_PASSWORD=Pa55word1
     networks:
         - bikestore_backend
     ports:
         - 1433:1433
+    volumes:
+        - sqldatavolume:/var/opt/mssql
   bikestorewebapi:
     container_name: demo-bike-store-api
     image: ${DOCKER_REGISTRY-}bikestorewebapi
@@ -28,3 +30,5 @@ services:
         - DB_SA_PASSWORD=Pa55word
     networks:
         - bikestore_backend
+volumes:
+  sqldatavolume:

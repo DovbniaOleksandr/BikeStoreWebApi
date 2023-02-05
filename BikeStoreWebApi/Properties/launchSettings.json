@@ -14,7 +14,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_HOST": "DESKTOP-8PQHPT3",
+        "DB_NAME": "BikeStoreWebApi",
+        "DB_SA_PASSWORD": "Pa55word"
       }
     },
     "BikeStoreWebApi": {
