@@ -14,9 +14,10 @@ namespace BikeStoreWebApi.Extensions
         {
             var host = Environment.GetEnvironmentVariable("DB_HOST");
             var dbName = Environment.GetEnvironmentVariable("DB_NAME"); ;
-            var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD"); ;
+            var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "sa";
 
-            var connectionString = $"Data Source={host};Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
+            var connectionString = $"Data Source={host};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword}";
 
             services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(connectionString, x => x.MigrationsAssembly("BikeStore.DAL")));
         }
