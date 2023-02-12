@@ -9,51 +9,32 @@
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "BikeStoreWebApi": {
+      "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_HOST": "DESKTOP-8PQHPT3",
+        "DB_SA_PASSWORD": "Pa55word",
         "DB_NAME": "BikeStoreWebApi",
-        "DB_SA_PASSWORD": "Pa55word"
-      }
-    },
-    "BikeStoreWebApi": {
-      "commandName": "Project",
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_HOST": "DESKTOP-8PQHPT3",
-        "DB_NAME": "BikeStoreWebApi",
-        "DB_SA_PASSWORD": "Pa55word"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
-    "WSL": {
-      "commandName": "WSL2",
-      "launchUrl": "https://localhost:5001/swagger",
-      "environmentVariables": {
-        "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "distributionName": ""
-    },
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": true,
-      "useSSL": true,
-      "httpPort": 5000,
-      "sslPort": 5001,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_HOST": "DESKTOP-8PQHPT3,1433",
+        "DB_SA_PASSWORD": "Pa55word",
         "DB_NAME": "BikeStoreWebApi",
-        "DB_SA_PASSWORD": "Pa55word"
-      }
+        "DB_HOST": "DESKTOP-8PQHPT3,1433",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "publishAllPorts": true,
+      "httpPort": 5000,
+      "useSSL": true,
+      "sslPort": 5001
     }
   }
 }
