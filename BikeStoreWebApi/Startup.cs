@@ -51,7 +51,7 @@ namespace BikeStoreWebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeStoreWebApi", Version = "v1" });
             });
 
-            services.ConfigureDatabase();
+            services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BikeStoreDB"), x => x.MigrationsAssembly("BikeStore.DAL")));
             services.AddAutoMapper(typeof(Startup));
 
             services.AddIdentity<User, Role>(options => 
@@ -87,10 +87,11 @@ namespace BikeStoreWebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStoreWebApi v1"));
                 context.Database.EnsureCreated();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeStoreWebApi v1"));
 
             app.ConfigureExceptionHandler();
 

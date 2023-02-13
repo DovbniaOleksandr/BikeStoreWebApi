@@ -14,9 +14,6 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "DB_SA_PASSWORD": "Pa55word",
-        "DB_NAME": "BikeStoreWebApi",
-        "DB_HOST": "DESKTOP-8PQHPT3",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
@@ -26,15 +23,22 @@
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "DB_SA_PASSWORD": "Pa55word",
-        "DB_NAME": "BikeStoreWebApi",
-        "DB_HOST": "DESKTOP-8PQHPT3,1433",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "publishAllPorts": true,
       "httpPort": 5000,
       "useSSL": true,
       "sslPort": 5001
+    },
+    "BikeStoreWenApi (Prod)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }

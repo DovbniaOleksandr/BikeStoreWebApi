@@ -19,8 +19,6 @@ namespace Tests.Integration
 {
     public class BikeApplication: WebApplicationFactory<Program>
     {
-        string _testConnectionString = string.Empty;
-        bool _useInMemoryDatabase = false;
         string inMemoryDatabaseConnectionString = Guid.NewGuid().ToString();
 
         protected override IHost CreateHost(IHostBuilder builder)
@@ -28,10 +26,6 @@ namespace Tests.Integration
             builder.ConfigureAppConfiguration(config =>
             {
                 var configuration = config.Build();
-
-                _testConnectionString = configuration.GetConnectionString("TestBikeStoreWebApi");
-
-                _useInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
             });
 
             builder.ConfigureServices(services => 
@@ -39,17 +33,10 @@ namespace Tests.Integration
                 var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<BikeStoreDBContext>));
                 services.Remove(descriptor);
 
-                if (_useInMemoryDatabase)
+                services.AddDbContext<BikeStoreDBContext>(options =>
                 {
-                    services.AddDbContext<BikeStoreDBContext>(options =>
-                    {
-                        options.UseInMemoryDatabase(inMemoryDatabaseConnectionString);
-                    });
-                }
-                else
-                {
-                    services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(_testConnectionString, x => x.MigrationsAssembly("BikeStore.DAL")));
-                }
+                    options.UseInMemoryDatabase(inMemoryDatabaseConnectionString);
+                });
 
                 var sp = services.BuildServiceProvider();
                 using (var scope = sp.CreateScope())
@@ -67,22 +54,6 @@ namespace Tests.Integration
             });
 
             return base.CreateHost(builder);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!_useInMemoryDatabase)
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<BikeStoreDBContext>();
-                optionsBuilder.UseSqlServer(_testConnectionString);
-
-                using (BikeStoreDBContext context = new BikeStoreDBContext(optionsBuilder.Options))
-                {
-                    context.Database.EnsureDeleted();
-                } 
-            }
-
-            base.Dispose(disposing);
         }
     }
 
