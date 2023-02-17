@@ -67,7 +67,7 @@ namespace BikeStoreWebApi
                     options.Lockout.MaxFailedAccessAttempts = 5;
                 }).AddEntityFrameworkStores<BikeStoreDBContext>();
 
-               services.ConfigureAuthenticationService(Configuration.GetSection("Auth"));
+            services.ConfigureAuthenticationService(Configuration.GetSection("Auth"));
 
             services.AddCors(options =>
             {
