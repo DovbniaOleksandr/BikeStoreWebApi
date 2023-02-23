@@ -157,5 +157,13 @@ namespace BikeStoreWebApi.Controllers
                 RefreshToken = newRefreshToken
             });
         }
+
+        [HttpGet()]
+        public async Task<ActionResult<string>> GetEnvironmentName()
+        {
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            return Ok(environmentName);
+        }
     }
 }
