@@ -27,17 +27,24 @@ namespace BikeStoreWebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            HostingEnvironment = environment;
         }
 
+        public IWebHostEnvironment HostingEnvironment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterServices();
+
+            if(HostingEnvironment.EnvironmentName != Microsoft.AspNetCore.Hosting.EnvironmentName.Development)
+            {
+                services.SetEnvironmentVariablesFromKeyVault(Configuration);
+            }
 
             services.AddControllers()
                 .AddFluentValidation(s =>
