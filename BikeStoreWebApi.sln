@@ -19,6 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 		{3FA95398-76A0-495B-A569-5365B406854C} = {3FA95398-76A0-495B-A569-5365B406854C}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{973149B3-4094-4238-AB2E-7C9DD41E7AB6}"
+	ProjectSection(SolutionItems) = preProject
+		BikeStoreWebApi\Dockerfile = BikeStoreWebApi\Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
