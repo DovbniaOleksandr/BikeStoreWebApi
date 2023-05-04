@@ -163,6 +163,8 @@ namespace BikeStoreWebApi.Controllers
         {
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+            var test = "test";
+
             return Ok(environmentName);
         }
     }
