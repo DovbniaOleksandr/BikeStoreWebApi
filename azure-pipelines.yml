@@ -27,16 +27,21 @@ stages:
         displayName: build job
         steps:
           - task: UseDotNet@2
-            displayName: Use .NET5 to build
+            displayName: 'Use .NET Core sdk 5.0.100'
             inputs:
-              version: '5.0.x'
+              packageType: 'sdk'
+              version: '5.0.100'
               includePreviewVersions: true
+
           - task: DotNetCoreCLI@2
-            displayName: Building Visual studio solution
+            displayName: 'dotnet restore'
+            inputs:
+              command: restore
+              projects: '**/*.csproj'
+          - task: DotNetCoreCLI@2
+            displayName: 'dotnet build'
             inputs:
               command: 'build'
-              projects: '**/*.csproj'
-              arguments: '--configuration debug'
 
   - stage: 
     displayName: Run unit tests
