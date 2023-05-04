@@ -5,53 +5,32 @@
 trigger:
 - master
 
+pool:
+  vmImage: ubuntu-latest
+
 resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '2ce1b0a5-1aa6-467b-8bf2-8d17e2821af0'
-  imageRepository: 'bikestorewebapi'
-  containerRegistry: 'bikestorewebapi20230221003632.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: 'latest'
+  buildConfiguration: 'Release'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
-  - stage:
-    displayName: Build .NET application
-    jobs:
-      - job:
-        displayName: build job
-        steps:
-          - task: UseDotNet@2
-            displayName: 'Use .NET Core sdk 5.0'
-            inputs:
-              packageType: 'sdk'
-              version: '5.0.x'
-              includePreviewVersions: true
-
-          - task: DotNetCoreCLI@2
-            displayName: 'dotnet restore'
-            inputs:
-              command: restore
-              projects: '**/*.csproj'
-          - task: DotNetCoreCLI@2
-            displayName: 'dotnet build'
-            inputs:
-              command: 'build'
-
-  - stage: 
-    displayName: Run unit tests
-    jobs:
-      - job:
-        displayName: unit tests job
-        steps:
-          - task: DotNetCoreCLI@2
-            displayName: Run Visual studio tests
-            inputs:
-              command: test
-              projects: '**/*Test*/*.csproj'
-              arguments: '--configuration debug'
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:  
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '$(Build.SourcesDirectory)/BikeStoreWebApi.sln'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: '$(Build.SourcesDirectory)/Tests/Test.csproj'
+    
