@@ -29,18 +29,16 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: DotNetCoreCLI@2
-      displayName: 'Build the project'
       inputs:
         command: 'build'
-        projects: '**/*.csproj'
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests'
+    - task: VSTest@2
       inputs:
-        command: 'test'
-        arguments: '--no-build'
-        publishTestResults: true
-        projects: '**/Tests/*.csproj'
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: '**\*test*.dll'
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        codeCoverageEnabled: true
+        platform: 'Azy CPU'
+        configuration: 'Release'
     
     - task: Docker@2
       displayName: Build and push an image to container registry
