@@ -5,32 +5,42 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
-
 resources:
 - repo: self
 
 variables:
-  buildConfiguration: 'Release'
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '2ce1b0a5-1aa6-467b-8bf2-8d17e2821af0'
+  imageRepository: 'bikestorewebapi'
+  containerRegistry: 'bikestorewebapi20230221003632.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: 'latest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
-  displayName: Build
+  displayName: Build and push stage
   jobs:
   - job: Build
     displayName: Build
+    pool:
+      vmImage: $(vmImageName)
     steps:  
-    - task: DotNetCoreCLI@2
+    - task: Bash@3
+      displayName: Test
       inputs:
-        command: 'build'
-        projects: '$(Build.SourcesDirectory)/BikeStoreWebApi.sln'
-        arguments: '--configuration $(buildConfiguration)'
-    - task: DotNetCoreCLI@2
+        targetType: 'inline'
+        script: |
+          docker build --target=test .
+    - task: Docker@2
+      displayName: Build and push an image to container registry
       inputs:
-        command: 'test'
-        projects: '$(Build.SourcesDirectory)/Tests/Tests.csproj'
-    
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
