@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: 'Test and Push'
+- stage: 'Test&Push'
   displayName: 'Run tests and push to container registry'
   jobs:
   - job: 'Test'
