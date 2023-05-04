@@ -13,8 +13,8 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: 'Test'
-  displayName: 'Run tests'
+- stage: 'Test and Push'
+  displayName: 'Run tests and push to container registry'
   jobs:
   - job: 'Test'
     displayName: 'Test job'
@@ -28,3 +28,13 @@ stages:
       inputs:
         command: 'test'
         arguments: '--configuration $(buildConfiguration)'
+  - job: 'Push'
+    displayName: 'Push image to container registry'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'BikeStoreWebApi20230221003632'
+        repository: 'bikestorewebapi'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: 'latest'
