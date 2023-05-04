@@ -20,12 +20,6 @@ stages:
     displayName: 'Build job'
 
     steps:
-    - task: NuGetToolInstaller@1
-
-    - task: NuGetCommand@2
-      inputs:
-        restoreSolution: '**/*.sln'
-
     - task: UseDotNet@2
       displayName: 'Use .NET SDK v5.x'
       inputs:
