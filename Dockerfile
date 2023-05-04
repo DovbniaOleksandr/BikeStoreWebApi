@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["BikeStoreWebApi/BikeStoreWebApi.csproj", "BikeStoreWebApi/"]
 COPY ["BikeStore.Services/BikeStore.Services.csproj", "BikeStore.Services/"]
 COPY ["BikeStoreEF/BikeStore.Core.csproj", "BikeStoreEF/"]
+COPY ["Tests/Tests.csproj", "Tests/"]
 COPY ["BikeStore.DAL/BikeStore.DAL.csproj", "BikeStore.DAL/"]
 RUN dotnet restore "BikeStoreWebApi/BikeStoreWebApi.csproj"
 COPY . .
