@@ -38,13 +38,6 @@ stages:
         projects: '**/*.csproj'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Install .NET tools from local manifest'
-      inputs:
-        command: custom
-        custom: tool
-        arguments: 'restore'
-
-    - task: DotNetCoreCLI@2
       displayName: 'Run Unit Tests - $(buildConfiguration)'
       inputs:
         command: 'test'
