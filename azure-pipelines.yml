@@ -27,19 +27,13 @@ stages:
     displayName: Build
     pool:
       vmImage: $(vmImageName)
-    steps:
+    steps:  
     - task: DotNetCoreCLI@2
       inputs:
-        command: 'build'
-    - task: VSTest@2
-      inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: '**\*test*.dll'
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-        codeCoverageEnabled: true
-        platform: 'Azy CPU'
-        configuration: 'Release'
-    
+        command: 'test'
+        projects: '**/*[Tt]est*/*.csproj'
+        publishTestResults: true
+        arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
