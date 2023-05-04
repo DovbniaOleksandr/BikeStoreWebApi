@@ -27,10 +27,10 @@ stages:
         displayName: build job
         steps:
           - task: UseDotNet@2
-            displayName: 'Use .NET Core sdk 5.0.100'
+            displayName: 'Use .NET Core sdk 5.0'
             inputs:
               packageType: 'sdk'
-              version: '5.0.100'
+              version: '5.0.x'
               includePreviewVersions: true
 
           - task: DotNetCoreCLI@2
