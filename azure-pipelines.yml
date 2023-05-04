@@ -32,12 +32,6 @@ stages:
         version: '5.x'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Restore project dependencies'
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
-
-    - task: DotNetCoreCLI@2
       displayName: 'Run Unit Tests - $(buildConfiguration)'
       inputs:
         command: 'test'
