@@ -32,5 +32,5 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: 'test'
-        projects: '$(Build.SourcesDirectory)/Tests/Test.csproj'
+        projects: '$(Build.SourcesDirectory)/Tests/Tests.csproj'
     
