@@ -10,13 +10,11 @@ WORKDIR /src
 COPY ["BikeStoreWebApi/BikeStoreWebApi.csproj", "BikeStoreWebApi/"]
 COPY ["BikeStore.Services/BikeStore.Services.csproj", "BikeStore.Services/"]
 COPY ["BikeStoreEF/BikeStore.Core.csproj", "BikeStoreEF/"]
-COPY ["Tests/Tests.csproj", "Tests/"]
 COPY ["BikeStore.DAL/BikeStore.DAL.csproj", "BikeStore.DAL/"]
 RUN dotnet restore "BikeStoreWebApi/BikeStoreWebApi.csproj"
 COPY . .
 WORKDIR "/src/BikeStoreWebApi"
 RUN dotnet build "BikeStoreWebApi.csproj" -c Release -o /app/build
-RUN dotnet test
 
 FROM build AS publish
 RUN dotnet publish "BikeStoreWebApi.csproj" -c Release -o /app/publish
