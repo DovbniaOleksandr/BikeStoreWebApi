@@ -13,14 +13,16 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: 'Build'
-  displayName: 'Build the web application'
+- stage: 'Test'
+  displayName: 'Run tests'
   jobs:
-  - job: 'Build'
-    displayName: 'Build job'
-
+  - job: 'Test'
+    displayName: 'Test job'
     steps:
-
+    - task: UseDotNet@2
+      displayName: 'Use .NET SDK v5.x'
+      inputs:
+        version: '5.x'
     - task: DotNetCoreCLI@2
       displayName: 'Run Unit Tests - $(buildConfiguration)'
       inputs:
