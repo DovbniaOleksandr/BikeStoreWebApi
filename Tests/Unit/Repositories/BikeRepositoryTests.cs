@@ -33,7 +33,7 @@ namespace Tests.Unit.Repositories
 
             //Assert
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(result.Count(), 3);
+            Assert.Equals(result.Count(), 3);
             Assert.That(result.All(b => b.Category != null));
             Assert.That(result.All(b => b.Brand != null));
         }
@@ -49,7 +49,7 @@ namespace Tests.Unit.Repositories
 
             //Assert
             Assert.That(result, Is.Not.Null);
-            Assert.AreEqual(result.BikeId, id);
+            Assert.Equals(result.BikeId, id);
             Assert.That(result.Brand, Is.Not.Null);
             Assert.That(result.Category, Is.Not.Null);
         }
@@ -79,7 +79,7 @@ namespace Tests.Unit.Repositories
 
             //Assert
             Assert.That(_context.Bikes, Is.All.Matches<Bike>(b => b.BikeId != bikeToDelete.BikeId));
-            Assert.AreEqual(_context.Bikes.Count(), 2);
+            Assert.Equals(_context.Bikes.Count(), 2);
         }
 
         [Test]

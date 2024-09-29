@@ -1,10 +1,16 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BikeStore.DAL.Migrations
 {
+    /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -246,8 +252,8 @@ namespace BikeStore.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 2, "7d4548b8-7f2f-4d5f-956a-5138f7bd2a22", "user", "USER" },
-                    { 1, "4a78d55b-698e-44fb-9052-e90424f10be6", "admin", "ADMIN" }
+                    { 1, null, "admin", "ADMIN" },
+                    { 2, null, "user", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -255,15 +261,15 @@ namespace BikeStore.DAL.Migrations
                 columns: new[] { "BrandId", "BrandName" },
                 values: new object[,]
                 {
-                    { 8, "Surly" },
-                    { 7, "Sun Bicycles" },
-                    { 6, "Strider" },
-                    { 9, "Trek" },
-                    { 4, "Pure Cycles" },
-                    { 3, "Heller" },
+                    { 1, "Electra" },
                     { 2, "Haro" },
+                    { 3, "Heller" },
+                    { 4, "Pure Cycles" },
                     { 5, "Ritchey" },
-                    { 1, "Electra" }
+                    { 6, "Strider" },
+                    { 7, "Sun Bicycles" },
+                    { 8, "Surly" },
+                    { 9, "Trek" }
                 });
 
             migrationBuilder.InsertData(
@@ -340,6 +346,7 @@ namespace BikeStore.DAL.Migrations
                 column: "UserId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

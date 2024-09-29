@@ -51,7 +51,7 @@ namespace BikeStoreWebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeStoreWebApi", Version = "v1" });
             });
 
-            services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration["SqlConnectionString"], x => x.MigrationsAssembly("BikeStore.DAL")));
+            services.AddDbContext<BikeStoreDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString"), x => x.MigrationsAssembly("BikeStore.DAL")));
             services.AddAutoMapper(typeof(Startup));
 
             services.AddIdentity<User, Role>(options => 
