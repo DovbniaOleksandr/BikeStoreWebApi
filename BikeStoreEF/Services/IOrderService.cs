@@ -10,8 +10,8 @@ namespace BikeStore.Core.Services
     public interface IOrderService
     {
         Task<IEnumerable<OrderDto>> GetAll();
-        Task<OrderDto> GetById(int id);
+        Task<OrderDto> GetById(Guid id);
         Task<OrderDto> CreateOrder(SaveOrderDto orderToCreate);
-        Task<bool> CompleteOrder(int id);
+        Task<bool> CompleteOrder(Guid id);
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace BikeStore.DAL
 {
-    public class BikeStoreDBContext: IdentityDbContext<User, Role, int>
+    public class BikeStoreDBContext: IdentityDbContext<User, Role, Guid>
     {
         public DbSet<Bike> Bikes { get; set; }
         public DbSet<Category> Categories { get; set; }

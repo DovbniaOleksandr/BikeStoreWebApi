@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BikeStore.DAL.Migrations
 {
     [DbContext(typeof(BikeStoreDBContext))]
-    [Migration("20240928224036_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240929170729_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,20 +27,18 @@ namespace BikeStore.DAL.Migrations
 
             modelBuilder.Entity("BikeStore.Core.Models.Bike", b =>
                 {
-                    b.Property<int>("BikeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BikeId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BikePhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BrandId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasMaxLength(150)
@@ -59,7 +57,7 @@ namespace BikeStore.DAL.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("BikeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
@@ -70,11 +68,9 @@ namespace BikeStore.DAL.Migrations
 
             modelBuilder.Entity("BikeStore.Core.Models.Brand", b =>
                 {
-                    b.Property<int>("BrandId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BrandId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BrandName")
                         .IsRequired()
@@ -82,65 +78,63 @@ namespace BikeStore.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.HasKey("BrandId");
+                    b.HasKey("Id");
 
                     b.ToTable("Brands", (string)null);
 
                     b.HasData(
                         new
                         {
-                            BrandId = 1,
+                            Id = new Guid("b7106f94-9801-4251-a033-4c934d9c9586"),
                             BrandName = "Electra"
                         },
                         new
                         {
-                            BrandId = 2,
+                            Id = new Guid("29148d4c-1370-4cbc-a91a-4e88c403ef35"),
                             BrandName = "Haro"
                         },
                         new
                         {
-                            BrandId = 3,
+                            Id = new Guid("4bda05a8-5715-4b5b-b98b-7f268dff8bb8"),
                             BrandName = "Heller"
                         },
                         new
                         {
-                            BrandId = 4,
+                            Id = new Guid("d2bbb808-89e9-4dc4-a3a5-046d36387216"),
                             BrandName = "Pure Cycles"
                         },
                         new
                         {
-                            BrandId = 5,
+                            Id = new Guid("1af9d716-5784-4c76-a44e-12c77566d5c9"),
                             BrandName = "Ritchey"
                         },
                         new
                         {
-                            BrandId = 6,
+                            Id = new Guid("f6b85288-29b0-438f-a608-8e5739d08192"),
                             BrandName = "Strider"
                         },
                         new
                         {
-                            BrandId = 7,
+                            Id = new Guid("2f1396c9-486b-4b74-ac01-f2e3fc9b6ff4"),
                             BrandName = "Sun Bicycles"
                         },
                         new
                         {
-                            BrandId = 8,
+                            Id = new Guid("40d37f56-4c68-4df3-b397-d373d417a221"),
                             BrandName = "Surly"
                         },
                         new
                         {
-                            BrandId = 9,
+                            Id = new Guid("cf726534-2ce3-454c-95ba-c100ac2ce28f"),
                             BrandName = "Trek"
                         });
                 });
 
             modelBuilder.Entity("BikeStore.Core.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -148,58 +142,56 @@ namespace BikeStore.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
                         {
-                            CategoryId = 1,
+                            Id = new Guid("1fbdbf33-a01e-4a46-b906-31bb892ba9bc"),
                             Name = "Children Bicycles"
                         },
                         new
                         {
-                            CategoryId = 2,
+                            Id = new Guid("677d4957-790d-4e84-ba95-4959c4095f14"),
                             Name = "Comfort Bicycles"
                         },
                         new
                         {
-                            CategoryId = 3,
+                            Id = new Guid("285443d0-3f17-46fc-b587-4659f5fd0867"),
                             Name = "Cruisers Bicycles"
                         },
                         new
                         {
-                            CategoryId = 4,
+                            Id = new Guid("472edd57-8591-4f15-9be3-52fd84efcb78"),
                             Name = "Cyclocross Bicycles"
                         },
                         new
                         {
-                            CategoryId = 5,
+                            Id = new Guid("4c43aeb9-3202-433f-9c46-e1c1a9fea0e2"),
                             Name = "Electric Bikes"
                         },
                         new
                         {
-                            CategoryId = 6,
+                            Id = new Guid("1e182920-87df-43ca-92ca-2d4a718fec5c"),
                             Name = "Mountain Bikes"
                         },
                         new
                         {
-                            CategoryId = 7,
+                            Id = new Guid("7ccdc9e9-1593-4aab-9b49-043832304ca0"),
                             Name = "Road Bikes"
                         });
                 });
 
             modelBuilder.Entity("BikeStore.Core.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BikeId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("BikeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -207,8 +199,8 @@ namespace BikeStore.DAL.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -221,11 +213,9 @@ namespace BikeStore.DAL.Migrations
 
             modelBuilder.Entity("BikeStore.Core.Models.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -251,13 +241,13 @@ namespace BikeStore.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("0b9be251-3a78-4e69-8efc-1ee17359c45e"),
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("1bed7346-c34e-41e4-b926-3278099af0b7"),
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -265,11 +255,9 @@ namespace BikeStore.DAL.Migrations
 
             modelBuilder.Entity("BikeStore.Core.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -308,12 +296,6 @@ namespace BikeStore.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -337,7 +319,7 @@ namespace BikeStore.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -351,8 +333,8 @@ namespace BikeStore.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -361,7 +343,7 @@ namespace BikeStore.DAL.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -375,8 +357,8 @@ namespace BikeStore.DAL.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -385,7 +367,7 @@ namespace BikeStore.DAL.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -396,8 +378,8 @@ namespace BikeStore.DAL.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -406,13 +388,13 @@ namespace BikeStore.DAL.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -421,10 +403,10 @@ namespace BikeStore.DAL.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -478,7 +460,7 @@ namespace BikeStore.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.Role", null)
                         .WithMany()
@@ -487,7 +469,7 @@ namespace BikeStore.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.User", null)
                         .WithMany()
@@ -496,7 +478,7 @@ namespace BikeStore.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.User", null)
                         .WithMany()
@@ -505,7 +487,7 @@ namespace BikeStore.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.Role", null)
                         .WithMany()
@@ -520,7 +502,7 @@ namespace BikeStore.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("BikeStore.Core.Models.User", null)
                         .WithMany()

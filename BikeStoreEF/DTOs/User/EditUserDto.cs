@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace BikeStoreWebApi.DTOs.User
+namespace BikeStore.Core.DTOs.User
 {
-    public class UserDto
+    public class EditUserDto
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }

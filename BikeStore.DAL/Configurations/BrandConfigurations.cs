@@ -15,11 +15,10 @@ namespace BikeStore.DAL.Configurations
                 .ToTable("Brands");
 
             builder
-                .HasKey(b => b.BrandId);
+                .HasKey(b => b.Id);
 
             builder
-                .Property(e => e.BrandId)
-                .UseIdentityColumn();
+                .Property(e => e.Id);
 
             builder
                 .Property(b => b.BrandName)

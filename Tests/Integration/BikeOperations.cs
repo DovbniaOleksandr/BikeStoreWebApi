@@ -52,8 +52,8 @@ namespace Tests.Integration
             var bikeDto = new SaveBikeDto()
             {
                 Name = "Best Bike",
-                BrandId = 1,
-                CategoryId = 2,
+                BrandId = new Guid(),
+                CategoryId = new Guid(),
                 ModelYear = 2000,
                 Price = 1000,
                 Description = "Post_CreateBike_Response_OK"
@@ -74,7 +74,7 @@ namespace Tests.Integration
             var bikeResponse = JsonConvert.DeserializeObject<BikeDto>(responseContent);
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-            Assert.That(bikeResponse.BikeId, Is.Not.EqualTo(null));
+            Assert.That(bikeResponse.Id, Is.Not.EqualTo(null));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Tests.Integration
             var responseContent = await response.Content.ReadAsStringAsync();
             var bikeResponse = JsonConvert.DeserializeObject<BikeDto>(responseContent);
 
-            Assert.That(bikeResponse.BikeId, Is.EqualTo(id));
+            Assert.That(bikeResponse.Id, Is.EqualTo(id));
         }
 
         [Test]
@@ -217,13 +217,13 @@ namespace Tests.Integration
             //Arrange
             var filters = new BikeFilters()
             {
-                Brands = new List<int>
+                Brands = new List<Guid>
                 {
-                    1
+                    new Guid()
                 }, 
-                Categories = new List<int>
+                Categories = new List<Guid>
                 {
-                    1
+                    new Guid()
                 }
             };
 
@@ -244,8 +244,8 @@ namespace Tests.Integration
             var responseContent = await response.Content.ReadAsStringAsync();
             var bikeResponse = JsonConvert.DeserializeObject<IEnumerable<BikeDto>>(responseContent);
 
-            Assert.That(bikeResponse.All(b => filters.Brands.Contains(b.Brand.BrandId)));
-            Assert.That(bikeResponse.All(b => filters.Categories.Contains(b.Category.CategoryId)));
+            Assert.That(bikeResponse.All(b => filters.Brands.Contains(b.Brand.Id)));
+            Assert.That(bikeResponse.All(b => filters.Categories.Contains(b.Category.Id)));
         }
     }
 }

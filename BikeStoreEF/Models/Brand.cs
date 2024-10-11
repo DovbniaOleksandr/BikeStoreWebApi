@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BikeStore.Core.Models
 {
     public class Brand
     {
-        public int BrandId { get; set; }
+        public Guid Id { get; set; }
         public string BrandName { get; set; }
         public IEnumerable<Bike> Bikes { get; set; }
     }

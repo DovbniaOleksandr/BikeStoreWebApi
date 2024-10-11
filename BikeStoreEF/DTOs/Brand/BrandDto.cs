@@ -7,7 +7,7 @@ namespace BikeStoreWebApi.DTOs
 {
     public class BrandDto
     {
-        public int BrandId { get; set; }
+        public Guid Id { get; set; }
         public string BrandName { get; set; }
     }
 }

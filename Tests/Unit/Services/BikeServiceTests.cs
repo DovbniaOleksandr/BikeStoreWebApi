@@ -36,7 +36,7 @@ namespace Tests.Unit.Services
         {
             //Arrange
             var bikeToDelete = _fixture.Create<Bike>();
-            _unitOfWorkMock.Setup(map => map.Bikes.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(bikeToDelete);
+            _unitOfWorkMock.Setup(map => map.Bikes.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(bikeToDelete);
             _unitOfWorkMock.Setup(map => map.Bikes.Remove(bikeToDelete));
             _unitOfWorkMock.Setup(map => map.SaveAsync());
 
@@ -46,7 +46,7 @@ namespace Tests.Unit.Services
             await service.DeleteBike(bikeToDelete);
 
             //Assert
-            _unitOfWorkMock.Verify(map => map.Bikes.GetByIdAsync(It.IsAny<int>()), Times.Once);
+            _unitOfWorkMock.Verify(map => map.Bikes.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
             _unitOfWorkMock.Verify(map => map.Bikes.Remove(bikeToDelete), Times.Once);
             _unitOfWorkMock.Verify(map => map.SaveAsync(), Times.Once);
         }
@@ -84,7 +84,7 @@ namespace Tests.Unit.Services
             //Arrange
             var bike = _fixture.Create<SaveBikeDto>();
             var bikeToBeUpdated = _fixture.Create<Bike>();
-            var id = _fixture.Create<int>();
+            var id = _fixture.Create<Guid>();
 
             _unitOfWorkMock.Setup(map => map.Bikes.GetWithBrandAndCategoryByIdAsync(id)).ReturnsAsync(bikeToBeUpdated);
             _unitOfWorkMock.Setup(map => map.SaveAsync());
@@ -105,7 +105,7 @@ namespace Tests.Unit.Services
         public async Task UpdateBike_ArgumentException()
         {
             //Arrange
-            var id = _fixture.Create<int>();
+            var id = _fixture.Create<Guid>();
             var service = _fixture.Create<BikeService>();
 
             //Act
@@ -118,7 +118,7 @@ namespace Tests.Unit.Services
         {
             //Arrange
             var bike = _fixture.Create<SaveBikeDto>();
-            var id = _fixture.Create<int>();
+            var id = _fixture.Create<Guid>();
 
             _unitOfWorkMock.Setup(map => map.Bikes.GetWithBrandAndCategoryByIdAsync(id)).ReturnsAsync((Bike) null);
 

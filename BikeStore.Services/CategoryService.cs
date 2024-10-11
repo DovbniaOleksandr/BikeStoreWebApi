@@ -48,14 +48,14 @@ namespace BikeStore.Services
             return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDto>>(categories);
         }
 
-        public async Task<CategoryDto> GetCategoryById(int id)
+        public async Task<CategoryDto> GetCategoryById(Guid id)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(id);
 
             return _mapper.Map<Category, CategoryDto>(category);
         }
 
-        public async Task<bool> UpdateCategory(int id, SaveCategoryDto category)
+        public async Task<bool> UpdateCategory(Guid id, SaveCategoryDto category)
         {
             if (category == null)
             {

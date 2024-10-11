@@ -66,8 +66,8 @@ namespace Tests.Helpers
                 new Bike()
                 {
                     Name = "Best Bike In The World",
-                    BrandId = 1,
-                    CategoryId = 2,
+                    BrandId = new Guid(),
+                    CategoryId = new Guid(),
                     ModelYear = 2001,
                     Price = 2001,
                     Description = "Test 1"
@@ -75,8 +75,8 @@ namespace Tests.Helpers
                 new Bike()
                 {
                     Name = "Best Bike In The World 2",
-                    BrandId = 1,
-                    CategoryId = 1,
+                    BrandId = new Guid(),
+                    CategoryId = new Guid(),
                     ModelYear = 2002,
                     Price = 2002,
                     Description = "Test 2"
@@ -84,8 +84,8 @@ namespace Tests.Helpers
                 new Bike()
                 {
                     Name = "Best Bike In The World 3",
-                    BrandId = 2,
-                    CategoryId = 2,
+                    BrandId = new Guid(),
+                    CategoryId = new Guid(),
                     ModelYear = 2002,
                     Price = 2003,
                     Description = "Test 3"

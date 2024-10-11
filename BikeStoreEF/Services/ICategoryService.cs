@@ -9,10 +9,10 @@ namespace BikeStore.Core.Services
 {
     public interface ICategoryService
     {
-        Task<CategoryDto> GetCategoryById(int id);
+        Task<CategoryDto> GetCategoryById(Guid id);
         Task<IEnumerable<CategoryDto>> GetAllCategories();
         Task<CategoryDto> CreateCategory(SaveCategoryDto newCategory);
-        Task<bool> UpdateCategory(int id, SaveCategoryDto category);
+        Task<bool> UpdateCategory(Guid id, SaveCategoryDto category);
         Task DeleteCategory(CategoryDto category);
     }
 }

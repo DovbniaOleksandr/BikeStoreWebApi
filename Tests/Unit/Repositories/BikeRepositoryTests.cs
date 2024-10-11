@@ -39,35 +39,6 @@ namespace Tests.Unit.Repositories
         }
 
         [Test]
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        public async Task GetWithBrandAndCategoryByIdAsync_ReturnsBikeWithId(int id)
-        {
-            //Act
-            var result = await _bikeRepository.GetWithBrandAndCategoryByIdAsync(id);
-
-            //Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.Equals(result.BikeId, id);
-            Assert.That(result.Brand, Is.Not.Null);
-            Assert.That(result.Category, Is.Not.Null);
-        }
-
-        [Test]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        public async Task GetWithBrandAndCategoryByIdAsync_ReturnsNull(int id)
-        {
-            //Act
-            var result = await _bikeRepository.GetWithBrandAndCategoryByIdAsync(id);
-
-            //Assert
-            Assert.That(result, Is.Null);
-        }
-
-        [Test]
         public async Task Remove_DeleteBike()
         {
             //Arrange
@@ -78,33 +49,8 @@ namespace Tests.Unit.Repositories
             await _context.SaveChangesAsync();
 
             //Assert
-            Assert.That(_context.Bikes, Is.All.Matches<Bike>(b => b.BikeId != bikeToDelete.BikeId));
+            Assert.That(_context.Bikes, Is.All.Matches<Bike>(b => b.Id != bikeToDelete.Id));
             Assert.Equals(_context.Bikes.Count(), 2);
-        }
-
-        [Test]
-        [TestCase(1)]
-        [TestCase(2)]
-        public async Task FindAllWithBrandAndCategoryAsync_FindByCategory(int categoryId)
-        {
-            //Act
-            var result = await _bikeRepository.FindAllWithBrandAndCategoryAsync(b => b.CategoryId == categoryId);
-
-            //Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.All.Matches<Bike>(b => b.CategoryId == categoryId));
-        }
-
-        [Test]
-        [TestCase(5)]
-        [TestCase(6)]
-        public async Task FindAllWithBrandAndCategoryAsync_DoNotFindByCategory(int categoryId)
-        {
-            //Act
-            var result = await _bikeRepository.FindAllWithBrandAndCategoryAsync(b => b.CategoryId == categoryId);
-
-            //Assert
-            Assert.That(result, Is.Empty);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace BikeStore.DAL.Repositories
                 {
                     Bike = new Bike
                     {
-                        BikeId = o.Bike.BikeId,
+                        Id = o.Bike.Id,
                         Name = o.Bike.Name,
                         ModelYear = o.Bike.ModelYear,
                         Description = o.Bike.Description,
@@ -50,7 +50,7 @@ namespace BikeStore.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Order> GetById(int id)
+        public async Task<Order> GetById(Guid id)
         {
             return await BikeStoreDBContext.Orders
                 .Include(o => o.Bike)

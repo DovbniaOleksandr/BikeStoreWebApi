@@ -9,6 +9,6 @@ namespace BikeStore.Core.Repositories
     public interface IOrderRepository : IRepository<Order>
     {
         Task<IEnumerable<Order>> GetAll();
-        Task<Order> GetById(int id);
+        Task<Order> GetById(Guid id);
     }
 }

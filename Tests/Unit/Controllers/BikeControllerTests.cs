@@ -54,8 +54,8 @@ namespace Tests.Unit.Controllers
         public async Task GetBikeById_ReturnsOk()
         {
             //Arrange
-            var testId = _fixture.Create<int>();
-            _fixture.Customize<BikeDto>(bike => bike.With(b => b.BikeId, testId));
+            var testId = _fixture.Create<Guid>();
+            _fixture.Customize<BikeDto>(bike => bike.With(b => b.Id, testId));
             var returnedBikeDto = _fixture.Create<BikeDto>();
 
             _bikeServiceMock.Setup(service => service.GetBikeWithCategoryAndBrand(testId)).ReturnsAsync(returnedBikeDto); ;
@@ -67,7 +67,7 @@ namespace Tests.Unit.Controllers
 
             //Assert
             Assert.That(result.Value, Is.Not.Null);
-            Assert.That(((BikeDto)result.Value).BikeId, Is.EqualTo(testId));
+            Assert.That(((BikeDto)result.Value).Id, Is.EqualTo(testId));
             Assert.That(result.StatusCode, Is.EqualTo(200));
 
             _bikeServiceMock.Verify(service => service.GetBikeWithCategoryAndBrand(testId), Times.Once);
@@ -77,7 +77,7 @@ namespace Tests.Unit.Controllers
         public async Task GetBikeById_ReturnsBadRequest()
         {
             //Arrange
-            var testId = 0;
+            var testId = Guid.Empty;
             var controller = new BikesController(_bikeServiceMock.Object, _mapperMock.Object);
 
             //Act
@@ -91,7 +91,7 @@ namespace Tests.Unit.Controllers
         public async Task GetBikeById_ReturnsNotFound()
         {
             //Arrange
-            var testId = _fixture.Create<int>();
+            var testId = _fixture.Create<Guid>();
 
             _bikeServiceMock.Setup(service => service.GetBikeWithCategoryAndBrand(testId)).ReturnsAsync(It.IsAny<BikeDto>);
 
@@ -122,7 +122,7 @@ namespace Tests.Unit.Controllers
 
             //Assert
             Assert.That(result.ActionName, Is.EqualTo(nameof(BikesController.CreateBike)));
-            Assert.That(((BikeDto)result.Value).BikeId, Is.EqualTo(testBikeDto.BikeId));
+            Assert.That(((BikeDto)result.Value).Id, Is.EqualTo(testBikeDto.Id));
             Assert.That(result.StatusCode, Is.EqualTo(201));
 
             _bikeServiceMock.Verify(service => service.CreateBike(testSaveBikeDto), Times.Once);
@@ -135,7 +135,7 @@ namespace Tests.Unit.Controllers
             var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
             var testBikeDto = _fixture.Create<BikeDto>();
 
-            var id = testBikeDto.BikeId;
+            var id = testBikeDto.Id;
 
             _bikeServiceMock.Setup(service => service.UpdateBike(id, testSaveBikeDto)).ReturnsAsync(true);
             _bikeServiceMock.Setup(service => service.GetBikeWithCategoryAndBrand(id)).ReturnsAsync(testBikeDto);
@@ -147,7 +147,7 @@ namespace Tests.Unit.Controllers
 
             //Assert
             Assert.That(result.Value, Is.Not.Null);
-            Assert.That(((BikeDto)result.Value).BikeId, Is.EqualTo(id));
+            Assert.That(((BikeDto)result.Value).Id, Is.EqualTo(id));
             Assert.That(result.StatusCode, Is.EqualTo(200));
 
             _bikeServiceMock.Verify(service => service.UpdateBike(id, testSaveBikeDto), Times.Once);
@@ -160,7 +160,7 @@ namespace Tests.Unit.Controllers
             //Arrange
             var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
 
-            var id = 0;
+            var id = Guid.Empty;
 
             var controller = new BikesController(_bikeServiceMock.Object, _mapperMock.Object);
 
@@ -177,7 +177,7 @@ namespace Tests.Unit.Controllers
             //Arrange
             var testSaveBikeDto = _fixture.Create<SaveBikeDto>();
 
-            var id = _fixture.Create<int>();
+            var id = _fixture.Create<Guid>();
 
             _bikeServiceMock.Setup(service => service.UpdateBike(id, testSaveBikeDto)).ReturnsAsync(false);
 

@@ -12,10 +12,5 @@ namespace BikeStore.Core.Models
         public string Secret { get; set; }
         public int TokenLifetime { get; set; }
         public int RefreshTokenLifetime { get; set; }
-
-        public SymmetricSecurityKey GetSymmetricSecurityKey()
-        {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret));
-        }
     }
 }

@@ -35,9 +35,9 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDto>> GetCategoryById(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategoryById(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var category = await _categoryService.GetCategoryById(id);
@@ -51,16 +51,16 @@ namespace BikeStoreWebApi.Controllers
         {
             var newCategory = await _categoryService.CreateCategory(saveCategoryDto);
 
-            var category = await _categoryService.GetCategoryById(newCategory.CategoryId);
+            var category = await _categoryService.GetCategoryById(newCategory.Id);
 
             return CreatedAtAction(nameof(CreateCategory), category);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
-        public async Task<ActionResult<CategoryDto>> UpdateCategory(int id, [FromBody] SaveCategoryDto saveCategoryDto)
+        public async Task<ActionResult<CategoryDto>> UpdateCategory(Guid id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             if (!(await _categoryService.UpdateCategory(id, saveCategoryDto)))
@@ -75,9 +75,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var category = await _categoryService.GetCategoryById(id);

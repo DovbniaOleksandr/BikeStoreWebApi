@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using BikeStore.Core.DTOs.User;
 using BikeStore.Core.Enums;
 using BikeStore.Core.Models;
 using BikeStoreWebApi.DTOs;
 using BikeStoreWebApi.DTOs.User;
 using BikeStoreWebApi.Helpers;
 using BikeStoreWebApi.Validators;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -36,7 +39,7 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetById(int id)
+        public async Task<ActionResult<UserDto>> GetById(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
@@ -51,12 +54,13 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting("Auth")]
         public async Task<ActionResult> Login([FromBody] LoginDto request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
-                return Unauthorized("Wrong user name.");
+                return Unauthorized(Responses.AuthFail);
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
 
@@ -66,29 +70,22 @@ namespace BikeStoreWebApi.Controllers
 
                 var token = JWT.GenerateJWT(user, userRoles, _authOptions.Value);
 
-                var refreshToken = JWT.GenerateRefreshToken();
-
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_authOptions.Value.RefreshTokenLifetime);
-
-                await _userManager.UpdateAsync(user);
-
                 var response = new LoginResponse()
                 {
                     Roles = userRoles,
                     UserName = user.UserName,
                     Token = token,
-                    UserId = user.Id,
-                    RefreshToken = refreshToken
+                    UserId = user.Id
                 };
 
                 return Ok(response);
             }
 
-            return Unauthorized(result.IsLockedOut ? "Your account was locked out." : string.Empty);
+            return Unauthorized(result.IsLockedOut ? "Your account was locked out." : Responses.AuthFail);
         }
 
         [HttpPost("register")]
+        [EnableRateLimiting("Auth")]
         public async Task<ActionResult> Register([FromBody] RegistrationUserDto registrationUserDto)
         {
             var user = _mapper.Map<RegistrationUserDto, User>(registrationUserDto);
@@ -127,45 +124,33 @@ namespace BikeStoreWebApi.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpPost("refresh")]
-        public async Task<ActionResult> Refresh(Token token)
+        [HttpPut("edit")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> EditUser(EditUserDto model)
         {
-            if (token is null)
-                return BadRequest("Invalid client request");
-
-            string accessToken = token.AccessToken;
-            string refreshToken = token.RefreshToken;
-
-            var principal = JWT.GetPrincipalFromExpiredToken(accessToken, _authOptions.Value);
-            var email = principal.FindFirst(ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-                return BadRequest("Invalid client request");
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-            var newAccessToken = JWT.GenerateJWT(user, userRoles, _authOptions.Value);
-            var newRefreshToken = JWT.GenerateRefreshToken();
-
-            user.RefreshToken = newRefreshToken;
-
-            await _userManager.UpdateAsync(user);
-
-            return Ok(new TokenResponse()
+            var loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!User.IsInRole(Roles.Admin) && loggedUserId != model.Id.ToString())
             {
-                Token = newAccessToken,
-                RefreshToken = newRefreshToken
-            });
-        }
+                return StatusCode(403, "You are not allowed to edit this user's information.");
+            }
 
-        [HttpGet()]
-        public async Task<ActionResult<string>> GetEnvironmentName()
-        {
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var user = await _userManager.FindByIdAsync(model.Id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            var test = "test";
+            user.Email = model.Email;
+            user.UserName = model.UserName;
 
-            return Ok(environmentName);
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.Errors);
         }
     }
 }

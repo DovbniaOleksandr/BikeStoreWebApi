@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BikeStoreWebApi.Controllers
@@ -29,9 +30,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDto>> GetOrderById(int id)
+        public async Task<ActionResult<OrderDto>> GetOrderById(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var order = await _orderService.GetById(id);
@@ -56,6 +57,12 @@ namespace BikeStoreWebApi.Controllers
         [HttpPost("create"), Authorize(AuthenticationSchemes = AuthSchemes.JwtBearer)]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] SaveOrderDto saveOrderDto)
         {
+            var loggedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!User.IsInRole(Roles.Admin) && loggedUserId != saveOrderDto.UserId.ToString())
+            {
+                return StatusCode(403, "You are not allowed to edit this user's information.");
+            }
+
             var newOrder = await _orderService.CreateOrder(saveOrderDto);
 
             var order = await _orderService.GetById(newOrder.Id);
@@ -65,9 +72,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPost("complete/{id}")]
-        public async Task<ActionResult<OrderDto>> CompleteOrder(int id)
+        public async Task<ActionResult<OrderDto>> CompleteOrder(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             if (!(await _orderService.CompleteOrder(id)))

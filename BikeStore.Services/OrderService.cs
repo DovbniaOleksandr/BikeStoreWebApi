@@ -21,7 +21,7 @@ namespace BikeStore.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> CompleteOrder(int id)
+        public async Task<bool> CompleteOrder(Guid id)
         {
             var order = await _unitOfWork.Orders.GetById(id);
 
@@ -53,7 +53,7 @@ namespace BikeStore.Services
             return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDto>>(orders);
         }
 
-        public async Task<OrderDto> GetById(int id)
+        public async Task<OrderDto> GetById(Guid id)
         {
             var order = await _unitOfWork.Orders.GetById(id);
 

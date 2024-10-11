@@ -48,14 +48,14 @@ namespace BikeStore.Services
             return _mapper.Map<IEnumerable<Brand>, IEnumerable<BrandDto>>(brands);
         }
 
-        public async Task<BrandDto> GetBrandById(int id)
+        public async Task<BrandDto> GetBrandById(Guid id)
         {
             var brand = await _unitOfWork.Brands.GetByIdAsync(id);
 
             return _mapper.Map<Brand, BrandDto>(brand);
         }
 
-        public async Task<bool> UpdateBrand(int id, SaveBrandDto brand)
+        public async Task<bool> UpdateBrand(Guid id, SaveBrandDto brand)
         {
             if (brand == null)
             {

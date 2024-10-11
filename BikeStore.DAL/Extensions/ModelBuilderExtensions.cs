@@ -15,47 +15,47 @@ namespace BikeStore.DAL.Extensions
             {
                 new Brand()
                 {
-                    BrandId = 1,
+                    Id = Guid.NewGuid(),
                     BrandName = "Electra"
                 },
                 new Brand()
                 {
-                    BrandId = 2,
+                    Id = Guid.NewGuid(),
                     BrandName = "Haro"
                 },
                 new Brand()
                 {
-                    BrandId = 3,
+                    Id = Guid.NewGuid(),
                     BrandName = "Heller"
                 },
                 new Brand()
                 {
-                    BrandId = 4,
+                    Id = Guid.NewGuid(),
                     BrandName = "Pure Cycles"
                 },
                 new Brand()
                 {
-                    BrandId = 5,
+                    Id = Guid.NewGuid(),
                     BrandName = "Ritchey"
                 },
                 new Brand()
                 {
-                    BrandId = 6,
+                    Id = Guid.NewGuid(),
                     BrandName = "Strider"
                 },
                 new Brand()
                 {
-                    BrandId = 7,
+                    Id = Guid.NewGuid(),
                     BrandName = "Sun Bicycles"
                 },
                 new Brand()
                 {
-                    BrandId = 8,
+                    Id = Guid.NewGuid(),
                     BrandName = "Surly"
                 },
                 new Brand()
                 {
-                    BrandId = 9,
+                    Id = Guid.NewGuid(),
                     BrandName = "Trek"
                 }
             });
@@ -64,37 +64,37 @@ namespace BikeStore.DAL.Extensions
             {
                 new Category()
                 {
-                    CategoryId = 1,
+                    Id = Guid.NewGuid(),
                     Name = "Children Bicycles"
                 },
                 new Category()
                 {
-                    CategoryId = 2,
+                    Id = Guid.NewGuid(),
                     Name = "Comfort Bicycles"
                 },
                 new Category()
                 {
-                    CategoryId = 3,
+                    Id = Guid.NewGuid(),
                     Name = "Cruisers Bicycles"
                 },
                 new Category()
                 {
-                    CategoryId = 4,
+                    Id = Guid.NewGuid(),
                     Name = "Cyclocross Bicycles"
                 },
                 new Category()
                 {
-                    CategoryId = 5,
+                    Id = Guid.NewGuid(),
                     Name = "Electric Bikes"
                 },
                 new Category()
                 {
-                    CategoryId = 6,
+                    Id = Guid.NewGuid(),
                     Name = "Mountain Bikes"
                 },
                 new Category()
                 {
-                    CategoryId = 7,
+                    Id = Guid.NewGuid(),
                     Name = "Road Bikes"
                 }
             });
@@ -103,14 +103,14 @@ namespace BikeStore.DAL.Extensions
             {
                 new Role
                 {
-                    Id = 1,
+                    Id = Guid.NewGuid(),
                     Name = Roles.Admin,
                     NormalizedName = Roles.Admin.ToUpper()
                 },
 
                 new Role
                 {
-                    Id = 2,
+                    Id = Guid.NewGuid(),
                     Name = Roles.User,
                     NormalizedName = Roles.User.ToUpper()
                 }

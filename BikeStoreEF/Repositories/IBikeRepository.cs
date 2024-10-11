@@ -11,7 +11,7 @@ namespace BikeStore.Core.Repositories
     public interface IBikeRepository: IRepository<Bike>
     {
         Task<IEnumerable<Bike>> GetAllWithBrandAndCategoryAsync();
-        Task<Bike> GetWithBrandAndCategoryByIdAsync(int id);
+        Task<Bike> GetWithBrandAndCategoryByIdAsync(Guid id);
         Task<IEnumerable<Bike>> FindAllWithBrandAndCategoryAsync(Expression<Func<Bike, bool>> predicate);
     }
 }

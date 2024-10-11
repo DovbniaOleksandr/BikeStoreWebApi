@@ -9,7 +9,7 @@ namespace BikeStore.Core.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        ValueTask<TEntity> GetByIdAsync(int id);
+        ValueTask<TEntity> GetByIdAsync(Guid id);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 

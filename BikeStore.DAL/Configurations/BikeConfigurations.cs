@@ -14,11 +14,10 @@ namespace BikeStore.DAL.Configurations
             builder.ToTable("Bikes");
 
             builder
-                .HasKey(b => b.BikeId);
+                .HasKey(b => b.Id);
 
             builder
-                .Property(b => b.BikeId)
-                .UseIdentityColumn();
+                .Property(b => b.Id);
 
             builder.Property(b => b.Name)
                 .IsRequired()

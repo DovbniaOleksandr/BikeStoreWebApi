@@ -26,11 +26,11 @@ namespace BikeStore.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Brand> GetWithBikesByIdAsync(int id)
+        public async Task<Brand> GetWithBikesByIdAsync(Guid id)
         {
             return await BikeStoreDBContext.Brands
                 .Include(b => b.Bikes)
-                .SingleOrDefaultAsync(b => b.BrandId == id);
+                .SingleOrDefaultAsync(b => b.Id == id);
         }
     }
 }

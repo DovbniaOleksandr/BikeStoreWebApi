@@ -14,11 +14,10 @@ namespace BikeStoreWebApi.Helpers
 {
     public static class JWT
     {
-
         public static string GenerateJWT(User user, IList<string> roles, AuthOptions authOptions)
         {
-            var securityKey = authOptions.GetSymmetricSecurityKey();
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(authOptions.Secret);
 
             var claims = new List<Claim>()
             {
@@ -31,44 +30,16 @@ namespace BikeStoreWebApi.Helpers
                 claims.Add(new Claim("role", role));
             }
 
-            var token = new JwtSecurityToken(authOptions.Issuer,
-                authOptions.Audience,
-                claims,
-                expires: DateTime.Now.AddSeconds(authOptions.TokenLifetime),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public static string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
-        }
-
-        public static ClaimsPrincipal GetPrincipalFromExpiredToken(string token, AuthOptions authOptions)
-        {
-            var securityKey = authOptions.GetSymmetricSecurityKey();
-
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(securityKey.Key),
-                ValidateLifetime = false
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddMinutes(authOptions.TokenLifetime),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-            return principal;
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

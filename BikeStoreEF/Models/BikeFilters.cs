@@ -10,7 +10,7 @@ namespace BikeStore.Core.Models
         public int? ModelYear { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
-        public List<int> Categories { get; set; }
-        public List<int> Brands { get; set; }
+        public List<Guid> Categories { get; set; }
+        public List<Guid> Brands { get; set; }
     }
 }

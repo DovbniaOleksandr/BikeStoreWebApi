@@ -7,7 +7,7 @@ namespace BikeStoreWebApi.DTOs.Order
 {
     public class SaveOrderDto
     {
-        public int UserId { get; set; }
-        public int BikeId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid BikeId { get; set; }
     }
 }

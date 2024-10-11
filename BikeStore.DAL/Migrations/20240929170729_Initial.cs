@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BikeStore.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,7 @@ namespace BikeStore.DAL.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -32,10 +31,7 @@ namespace BikeStore.DAL.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,26 +56,24 @@ namespace BikeStore.DAL.Migrations
                 name: "Brands",
                 columns: table => new
                 {
-                    BrandId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BrandName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brands", x => x.BrandId);
+                    table.PrimaryKey("PK_Brands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,7 +82,7 @@ namespace BikeStore.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -109,7 +103,7 @@ namespace BikeStore.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -131,7 +125,7 @@ namespace BikeStore.DAL.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -148,8 +142,8 @@ namespace BikeStore.DAL.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +166,7 @@ namespace BikeStore.DAL.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -192,11 +186,10 @@ namespace BikeStore.DAL.Migrations
                 name: "Bikes",
                 columns: table => new
                 {
-                    BikeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    BrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModelYear = table.Column<short>(type: "smallint", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BikePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -204,18 +197,18 @@ namespace BikeStore.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bikes", x => x.BikeId);
+                    table.PrimaryKey("PK_Bikes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Bikes_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Bikes_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -223,10 +216,9 @@ namespace BikeStore.DAL.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BikeId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BikeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -243,7 +235,7 @@ namespace BikeStore.DAL.Migrations
                         name: "FK_Orders_Bikes_BikeId",
                         column: x => x.BikeId,
                         principalTable: "Bikes",
-                        principalColumn: "BikeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -252,38 +244,38 @@ namespace BikeStore.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, null, "admin", "ADMIN" },
-                    { 2, null, "user", "USER" }
+                    { new Guid("0b9be251-3a78-4e69-8efc-1ee17359c45e"), null, "admin", "ADMIN" },
+                    { new Guid("1bed7346-c34e-41e4-b926-3278099af0b7"), null, "user", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Brands",
-                columns: new[] { "BrandId", "BrandName" },
+                columns: new[] { "Id", "BrandName" },
                 values: new object[,]
                 {
-                    { 1, "Electra" },
-                    { 2, "Haro" },
-                    { 3, "Heller" },
-                    { 4, "Pure Cycles" },
-                    { 5, "Ritchey" },
-                    { 6, "Strider" },
-                    { 7, "Sun Bicycles" },
-                    { 8, "Surly" },
-                    { 9, "Trek" }
+                    { new Guid("1af9d716-5784-4c76-a44e-12c77566d5c9"), "Ritchey" },
+                    { new Guid("29148d4c-1370-4cbc-a91a-4e88c403ef35"), "Haro" },
+                    { new Guid("2f1396c9-486b-4b74-ac01-f2e3fc9b6ff4"), "Sun Bicycles" },
+                    { new Guid("40d37f56-4c68-4df3-b397-d373d417a221"), "Surly" },
+                    { new Guid("4bda05a8-5715-4b5b-b98b-7f268dff8bb8"), "Heller" },
+                    { new Guid("b7106f94-9801-4251-a033-4c934d9c9586"), "Electra" },
+                    { new Guid("cf726534-2ce3-454c-95ba-c100ac2ce28f"), "Trek" },
+                    { new Guid("d2bbb808-89e9-4dc4-a3a5-046d36387216"), "Pure Cycles" },
+                    { new Guid("f6b85288-29b0-438f-a608-8e5739d08192"), "Strider" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "CategoryId", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Children Bicycles" },
-                    { 2, "Comfort Bicycles" },
-                    { 3, "Cruisers Bicycles" },
-                    { 4, "Cyclocross Bicycles" },
-                    { 5, "Electric Bikes" },
-                    { 6, "Mountain Bikes" },
-                    { 7, "Road Bikes" }
+                    { new Guid("1e182920-87df-43ca-92ca-2d4a718fec5c"), "Mountain Bikes" },
+                    { new Guid("1fbdbf33-a01e-4a46-b906-31bb892ba9bc"), "Children Bicycles" },
+                    { new Guid("285443d0-3f17-46fc-b587-4659f5fd0867"), "Cruisers Bicycles" },
+                    { new Guid("472edd57-8591-4f15-9be3-52fd84efcb78"), "Cyclocross Bicycles" },
+                    { new Guid("4c43aeb9-3202-433f-9c46-e1c1a9fea0e2"), "Electric Bikes" },
+                    { new Guid("677d4957-790d-4e84-ba95-4959c4095f14"), "Comfort Bicycles" },
+                    { new Guid("7ccdc9e9-1593-4aab-9b49-043832304ca0"), "Road Bikes" }
                 });
 
             migrationBuilder.CreateIndex(

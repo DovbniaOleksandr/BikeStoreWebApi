@@ -43,9 +43,9 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BikeDto>> GetBikeById(int id)
+        public async Task<ActionResult<BikeDto>> GetBikeById(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var bike = await _bikeService.GetBikeWithCategoryAndBrand(id);
@@ -67,9 +67,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
-        public async Task<ActionResult<BikeDto>> UpdateBike(int id, [FromBody] SaveBikeDto saveBikeDto)
+        public async Task<ActionResult<BikeDto>> UpdateBike(Guid id, [FromBody] SaveBikeDto saveBikeDto)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             if(!(await _bikeService.UpdateBike(id, saveBikeDto)))
@@ -84,9 +84,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBike(int id)
+        public async Task<IActionResult> DeleteBike(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var bike = await _bikeService.GetBikeById(id);

@@ -38,12 +38,12 @@ namespace BikeStore.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Bike> GetWithBrandAndCategoryByIdAsync(int id)
+        public async Task<Bike> GetWithBrandAndCategoryByIdAsync(Guid id)
         {
             return await BikeStoreDBContext.Bikes
                 .Include(b => b.Category)
                 .Include(b => b.Brand)
-                .SingleOrDefaultAsync(b => b.BikeId == id);
+                .SingleOrDefaultAsync(b => b.Id == id);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace BikeStoreWebApi.DTOs
     public class SaveBikeDto
     {
         public string Name { get; set; }
-        public int BrandId { get; set; }
-        public int CategoryId { get; set; }
+        public Guid BrandId { get; set; }
+        public Guid CategoryId { get; set; }
         public short ModelYear { get; set; }
         public decimal Price { get; set; }
         public string BikePhoto { get; set; }

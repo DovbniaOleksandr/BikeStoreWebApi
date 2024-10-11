@@ -10,6 +10,6 @@ namespace BikeStore.Core.Repositories
     public interface IBrandRepository: IRepository<Brand>
     {
         Task<IEnumerable<Brand>> GetAllWithBikesAsync();
-        Task<Brand> GetWithBikesByIdAsync(int id);
+        Task<Brand> GetWithBikesByIdAsync(Guid id);
     }
 }

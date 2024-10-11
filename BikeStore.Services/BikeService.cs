@@ -34,7 +34,7 @@ namespace BikeStore.Services
 
         public async Task DeleteBike(Bike bike)
         {
-            var bikeToDelete = await _unitOfWork.Bikes.GetByIdAsync(bike.BikeId);
+            var bikeToDelete = await _unitOfWork.Bikes.GetByIdAsync(bike.Id);
 
             _unitOfWork.Bikes.Remove(bikeToDelete);
             await _unitOfWork.SaveAsync();
@@ -68,7 +68,7 @@ namespace BikeStore.Services
             return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
 
-        public async Task<BikeDto> GetBikeById(int id)
+        public async Task<BikeDto> GetBikeById(Guid id)
         {
             var bike = await _unitOfWork.Bikes.GetByIdAsync(id);
 
@@ -82,14 +82,14 @@ namespace BikeStore.Services
             return _mapper.Map<IEnumerable<Bike>, IEnumerable<BikeDto>>(bikes);
         }
 
-        public async Task<BikeDto> GetBikeWithCategoryAndBrand(int id)
+        public async Task<BikeDto> GetBikeWithCategoryAndBrand(Guid id)
         {
             var bike = await _unitOfWork.Bikes.GetWithBrandAndCategoryByIdAsync(id);
 
             return _mapper.Map<Bike, BikeDto>(bike);
         }
 
-        public async Task<bool> UpdateBike(int id, SaveBikeDto bike)
+        public async Task<bool> UpdateBike(Guid id, SaveBikeDto bike)
         {
             if (bike == null)
             {

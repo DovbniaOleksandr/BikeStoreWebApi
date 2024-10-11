@@ -10,6 +10,6 @@ namespace BikeStore.Core.Repositories
     public interface ICategoryRepository: IRepository<Category>
     {
         Task<IEnumerable<Category>> GetAllWithBikesAsync();
-        Task<Category> GetWithBikesByIdAsync(int id);
+        Task<Category> GetWithBikesByIdAsync(Guid id);
     }
 }

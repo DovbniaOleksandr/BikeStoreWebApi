@@ -35,9 +35,9 @@ namespace BikeStoreWebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BrandDto>> GetBrandById(int id)
+        public async Task<ActionResult<BrandDto>> GetBrandById(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var brand = await _brandService.GetBrandById(id);
@@ -51,16 +51,16 @@ namespace BikeStoreWebApi.Controllers
         {
             var newBrand = await _brandService.CreateBrand(saveBrandDto);
 
-            var brand = await _brandService.GetBrandById(newBrand.BrandId);
+            var brand = await _brandService.GetBrandById(newBrand.Id);
 
             return CreatedAtAction(nameof(CreateBrand), brand);
         }
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpPut("{id}")]
-        public async Task<ActionResult<BrandDto>> UpdateBrand(int id, [FromBody] SaveBrandDto saveBrandDto)
+        public async Task<ActionResult<BrandDto>> UpdateBrand(Guid id, [FromBody] SaveBrandDto saveBrandDto)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             if (!(await _brandService.UpdateBrand(id, saveBrandDto)))
@@ -75,9 +75,9 @@ namespace BikeStoreWebApi.Controllers
 
         [Authorize(Roles = Roles.Admin, AuthenticationSchemes = AuthSchemes.JwtBearer)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBrand(int id)
+        public async Task<IActionResult> DeleteBrand(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             var brand = await _brandService.GetBrandById(id);

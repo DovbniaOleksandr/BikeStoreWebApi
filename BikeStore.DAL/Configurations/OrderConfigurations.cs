@@ -1,9 +1,6 @@
 ﻿using BikeStore.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BikeStore.DAL.Configurations
 {
@@ -17,8 +14,7 @@ namespace BikeStore.DAL.Configurations
                 .HasKey(b => b.Id);
 
             builder
-                .Property(b => b.Id)
-                .UseIdentityColumn();
+                .Property(b => b.Id);
 
             builder
                 .Property(b => b.CreatedAt)

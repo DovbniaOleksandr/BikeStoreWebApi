@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BikeStore.Core.Models
 {
-    public class Role: IdentityRole<int>
+    public class Role: IdentityRole<Guid>
     {
 
     }

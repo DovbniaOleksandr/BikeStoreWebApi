@@ -8,10 +8,10 @@ namespace BikeStore.Core.Models
 {
     public class Bike
     {
-        public int BikeId { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public int BrandId { get; set; }
-        public int CategoryId { get; set; }
+        public Guid BrandId { get; set; }
+        public Guid CategoryId { get; set; }
         public short ModelYear { get; set; }
         public decimal Price { get; set; }
         public string BikePhoto { get; set; }
